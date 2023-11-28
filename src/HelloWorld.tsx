@@ -1,16 +1,20 @@
-import {spring} from 'remotion';
 import {
 	AbsoluteFill,
 	interpolate,
 	Sequence,
 	useCurrentFrame,
 	useVideoConfig,
+	Video,
+	spring,
+	staticFile
 } from 'remotion';
 import {Logo} from './HelloWorld/Logo';
 import {Subtitle} from './HelloWorld/Subtitle';
 import {Title} from './HelloWorld/Title';
 import {z} from 'zod';
 import {zColor} from '@remotion/zod-types';
+
+import testVideo from './assets/test_video.mp4';
 
 export const myCompSchema = z.object({
 	titleText: z.string(),
@@ -64,7 +68,7 @@ export const HelloWorld: React.FC<z.infer<typeof myCompSchema>> = ({
 				</AbsoluteFill>
 				{/* Sequences can shift the time for its children! */}
 				<Sequence from={35}>
-					<Title titleText={propOne} titleColor={propTwo} />
+					<Video src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"  />
 				</Sequence>
 				{/* The subtitle will only enter on the 75th frame. */}
 				<Sequence from={75}>
