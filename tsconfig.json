@@ -6,10 +6,23 @@
 		"outDir": "./dist",
 		"strict": true,
 		"noEmit": true,
-		"lib": ["es2015"],
+		"lib": ["es2015","es2022", "DOM"],
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
-		"noUnusedLocals": true
-	}
+		"noUnusedLocals": true,
+
+        "rootDir": ".",
+		"noImplicitAny": false,
+        "strictPropertyInitialization": false,
+        "baseUrl": "./src",
+        "allowJs": true,
+        "types": ["node"],
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "declaration": true,
+        "importHelpers": true
+    },
+    "include": ["src/**/*", "video/**/*", "assets/**/*", "remotion.config.ts"]
+	
 }
