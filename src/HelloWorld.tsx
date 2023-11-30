@@ -14,7 +14,7 @@ import {Title} from './HelloWorld/Title';
 import {z} from 'zod';
 import {zColor} from '@remotion/zod-types';
 
-import videoIntro from '../../assets/intro_green.mp4';
+import videoIntro from '../assets/intro_green.mp4';
 
 export const myCompSchema = z.object({
 	titleText: z.string(),
