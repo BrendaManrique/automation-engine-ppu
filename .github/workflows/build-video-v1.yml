@@ -24,13 +24,14 @@ jobs:
       - name: Install FFMPEG
         run: sudo apt update
         run: sudo apt install ffmpeg
-      - run: npm i
+      - run: yarn
       - run: echo $WORKFLOW_INPUT > input-props.json
         env:
           WORKFLOW_INPUT: ${{ toJson(github.event.inputs) }}
         
       - name: Create Youtube video
-        run: ./bin/run create youtube --upload
+        run: yarn remotion render HelloWorld out/video.mp4 --props="./input-props.json"
+      #  run: ./bin/run create youtube --upload
 
       #- run: npm run build -- --props="./input-props.json"
 
