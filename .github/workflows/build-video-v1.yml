@@ -1,4 +1,4 @@
-name: Render video
+name: Render video V1
 on:
   workflow_dispatch:
     inputs:
@@ -21,9 +21,12 @@ jobs:
       - name: Setup Node.JS environment
         uses: actions/setup-node@main
 
-      - name: Install FFMPEG
+      - name: Update apt
         run: sudo apt update
+
+      - name: Install FFMPEG
         run: sudo apt install ffmpeg
+        
       - run: yarn
       - run: echo $WORKFLOW_INPUT > input-props.json
         env:
