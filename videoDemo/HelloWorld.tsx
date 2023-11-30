@@ -68,7 +68,7 @@ export const HelloWorld: React.FC<z.infer<typeof myCompSchema>> = ({
 				</AbsoluteFill>
 				{/* Sequences can shift the time for its children! */}
 				<Sequence from={35}>
-					<Video src="https://player.vimeo.com/external/516260402.hd.mp4?s=337a95a1b2fc99043000e6e07938fdf891bf7287&profile_id=172&oauth2_token_id=57447761"  />
+					<Video src={videoIntro}/>
 				</Sequence>
 				{/* The subtitle will only enter on the 75th frame. */}
 				<Sequence from={75}>

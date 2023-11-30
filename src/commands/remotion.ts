@@ -1,6 +1,7 @@
-import { Command, Flags } from '@oclif/core';
-import { GetContentService } from '../services';
+import { Command, Flags, Args } from '@oclif/core';
+//import { GetContentService } from '../services';
 import shell from 'shelljs';
+import fs from 'fs';
 
 export default class Remotion extends Command {
     static description = 'Remotion framework related commands';
@@ -9,6 +10,7 @@ export default class Remotion extends Command {
         '<%= config.bin %> <%= command.id %> upgrade',
         '<%= config.bin %> <%= command.id %> preview',
         '<%= config.bin %> <%= command.id %> render-example',
+        '<%= config.bin %> <%= command.id %> render-demo',
         '<%= config.bin %> <%= command.id %> render-thumb-example',
     ];
 
@@ -19,23 +21,35 @@ export default class Remotion extends Command {
         }),
     }
 
-    static args = [
+    static args = {
+        command: Args.string({description: 'Command to run', required: true,
+        options: ['upgrade', 'preview', 'render-example', 'render-demo','render-thumb-example']}),
+      }
+
+    /*static args = [
         {
             name: 'command',
             required: true,
             description: 'Command to run',
-            options: ['upgrade', 'preview', 'render-example', 'render-thumb-example'],
+            options: ['upgrade', 'preview', 'render-example', 'render-demo','render-thumb-example'],
         },
-    ];
+    ];*/
 
     public async run(): Promise<void> {
         const { args, flags } = await this.parse(Remotion);
+        let content = {};
 
-        const { content } = await new GetContentService().execute(flags.filename)
-        if (!content || !content.renderData) {
-            throw new Error('Content not found');
-        }
-        const durationInFrames = Math.round(this.getFullDuration(content.renderData) * content.fps)
+        if(args.command === 'render-demo'){
+            const rawData = fs.readFileSync('./props.json');
+            content = JSON.parse(rawData.toString())['content'];
+        } /*else {
+            content = await new GetContentService().execute(flags.filename)['content'] || undefined;
+            if (!content || !content['renderData']) {
+                throw new Error('Content not found');
+            }
+        }*/
+        
+        const durationInFrames = Math.round(this.getFullDuration(content['renderData']) * content['fps'])
 
 
         const props = {
@@ -54,6 +68,9 @@ export default class Remotion extends Command {
                 break;
             case 'render-example':
                 command = `yarn remotion render video/src/index.tsx Main out.mp4 --props='${JSON.stringify(props)}'`;
+                break;
+            case 'render-demo':
+                command = `yarn remotion render videoDemo/index.ts HelloWorld out/video.mp4 --props='{}'`;
                 break;
             case 'render-thumb-example':
                 command = `yarn remotion still video/src/index.tsx Thumbnail thumb.png --props='${JSON.stringify(props)}'`;

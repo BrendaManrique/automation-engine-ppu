@@ -1,5 +1,15 @@
-#!/usr/bin/env node
+#!/usr/bin/env node_modules/.bin/ts-node
+// eslint-disable-next-line node/shebang, unicorn/prefer-top-level-await
+;(async () => {
+  const oclif = await import('@oclif/core')
 
+  //await import('tsx')
+
+  process.env.NODE_ENV = 'development'
+
+  await oclif.execute({development: true, dir: __dirname})
+})()
+/*
 (async () => {
     const oclif = require('@oclif/core')
 
@@ -10,4 +20,4 @@
     oclif.settings.debug = true;
 
     oclif.run().then(oclif.flush).catch(oclif.Errors.handle)
-})()
+})()*/

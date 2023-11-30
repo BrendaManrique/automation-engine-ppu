@@ -26,7 +26,7 @@ import { Transition } from './Podcast/Transition';
 import { Logo } from './Podcast/Logo';
 import { Intro } from './Podcast/Intro';
 import { Wrapper } from './Wrappers/index';
-import InterfaceJsonContent from '../../src/models/InterfaceJsonContent';
+import InterfaceJsonContent from '../../videoDemo/models/InterfaceJsonContent';
 import audio1 from '../../assets/voice-test.mp3';
 import background from '../../assets/background1.mp4';
 import videoIntro from '../../assets/intro_green.mp4';

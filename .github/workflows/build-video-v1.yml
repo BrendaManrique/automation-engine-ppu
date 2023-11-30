@@ -33,7 +33,8 @@ jobs:
           WORKFLOW_INPUT: ${{ toJson(github.event.inputs) }}
         
       - name: Create Youtube video
-        run: yarn remotion render HelloWorld out/video.mp4 --props="./input-props.json"
+        run: ./bin/dev remotion render-demo
+      #  run: yarn remotion render HelloWorld out/video.mp4 --props="./input-props.json"
       #  run: ./bin/run create youtube --upload
 
       #- run: npm run build -- --props="./input-props.json"
