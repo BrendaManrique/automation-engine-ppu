@@ -1,5 +1,6 @@
 export default interface Segment {
     start: number,
     end: number,
-    word: string,
+    word?: string,
+    text?: string,
 }

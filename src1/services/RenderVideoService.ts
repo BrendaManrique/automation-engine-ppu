@@ -39,6 +39,7 @@ class RenderVideoService {
 
         const durationInFrames = Math.floor(this.getFullDuration() * this.content.fps)
 
+        //Key function to render Main.tsx
         await renderMedia({
             serveUrl: bundle,
             onStart: ({ frameCount: total }) => {

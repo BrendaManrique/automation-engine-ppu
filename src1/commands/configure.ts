@@ -22,6 +22,10 @@ export default class Configure extends Command {
             CHROME_BIN: '',
             INSTAGRAM_EMAIL: '',
             INSTAGRAM_PASSWORD: '',
+            OPENAI_API_KEY: '',
+            OPENAI_API_ORG: '',
+            STABLE_DIFFUSION_API_KEY: '',
+            PEXELS_API_KEY: ''
         };
 
         if (await confirm('Do you wanna configure TTS service?  [y/n]')) {

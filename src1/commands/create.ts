@@ -12,8 +12,11 @@ import {
     RenderVideoService,
     TextToSpeechService,
     YoutubeUploadService,
+    ContentProcessService,
 } from '../services';
 import { getLatestFileCreated } from '../utils/getFiles';
+import { log } from 'console';
+import fs from 'fs';
 
 export default class Create extends Command {
     static description = 'Create video and upload to destination';
@@ -77,7 +80,10 @@ const tts = async ({ filename }: CreateConfig) => {
         synthesizeEnd: true,
     });
 
-    await new ExportDataService(contentWithAudio).execute(file);
+    const contentProcessed = await new ContentProcessService(content).execute({
+        content: contentWithAudio
+    });
+    await new ExportDataService(contentProcessed).execute(file);
 };
 
 const youtube = async ({
@@ -86,23 +92,33 @@ const youtube = async ({
     onlyUpload,
     upload,
 }: CreateConfig) => {
-    let { content, file } = await new GetContentService().execute(filename, 'landscape');
+    let { content, file } = await new GetContentService().execute(filename, 'portrait');
 
     if (!onlyUpload) {
         if (needTTS) {
-            content = await new TextToSpeechService(content).execute({
+            const contentTts = await new TextToSpeechService(content).execute({
                 synthesizeIntro: true,
                 synthesizeEnd: true,
-            });
+            })
+            content = await new ContentProcessService(contentTts).execute({
+                content
+            }, 'portrait');
         }
 
-        content = await new GetYoutubeinfoService(content).execute();
+        //content = await new GetYoutubeinfoService(content).execute();
+
+        const rawData = fs.readFileSync('./props.json');
+        const data = JSON.parse(rawData.toString());
+        // Modify the value
+        data.content = content;
+        // Write the modified data back to the file
+        fs.writeFileSync('./props.json', JSON.stringify(data));
 
         const bundle = await new BundleVideoService().execute();
 
         await new RenderVideoService(content).execute(
             bundle,
-            'landscape',
+            'portrait',
             true,
             'youtube',
         );
@@ -114,10 +130,11 @@ const youtube = async ({
         const videoPath = await getLatestFileCreated('mp4');
         const thumbnailPath = await getLatestFileCreated('jpeg');
 
-        await new YoutubeUploadService(content).execute(
-            videoPath,
-            thumbnailPath,
-        );
+        //TODO
+         await new YoutubeUploadService(content).execute(
+             videoPath,
+             thumbnailPath,
+         );
     }
 
     await new ExportDataService(content).execute(file);
@@ -137,6 +154,9 @@ const instagram = async ({
                 synthesizeIntro: false,
                 synthesizeEnd: false,
             });
+            content = await new ContentProcessService(content).execute({
+                content
+            }, 'portrait');
         }
 
         const bundle = await new BundleVideoService().execute();

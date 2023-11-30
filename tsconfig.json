@@ -1,28 +1,24 @@
 {
-	"compilerOptions": {
-		"target": "ES2018",
-		"module": "commonjs",
-		"jsx": "react-jsx",
-		"outDir": "./dist",
-		"strict": true,
-		"noEmit": true,
-		"lib": ["es2015","es2022", "DOM"],
-		"esModuleInterop": true,
-		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true,
-		"noUnusedLocals": true,
-
+    "compilerOptions": {
+        "target": "es2022",
+        "module": "commonjs",
+        "outDir": "dist",
+        "jsx": "react-jsx",
         "rootDir": ".",
-		"noImplicitAny": false,
+        "strict": true,
+        "noImplicitAny": false,
         "strictPropertyInitialization": false,
         "baseUrl": "./src",
         "allowJs": true,
         "types": ["node"],
+        "esModuleInterop": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
         "declaration": true,
-        "importHelpers": true
+        "importHelpers": true,
+        "lib": ["es2022", "DOM"]
     },
     "include": ["src/**/*", "video/**/*", "assets/**/*", "remotion.config.ts"]
-	
 }

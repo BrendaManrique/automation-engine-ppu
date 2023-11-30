@@ -92,7 +92,7 @@ export default class GetYoutubeInfoService {
                         `Failed at refreshing youtube token \n${JSON.stringify(
                             err,
                         )}`,
-                        'YoutubeUploadService',
+                        'GetYoutubeInfoService',
                     );
                     return;
                 }

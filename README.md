@@ -94,7 +94,7 @@ https://accounts.google.com/o/oauth2/auth?client_id=1111-9s9999v.apps.googleuser
 
 Copy to terminal:
 ```
-curl --request POST --data "code=4\\F0AVVVVVVVVVVVg&client_id=111111-9sn99999s2nbv.apps.googleusercontent.com&client_secret=GOGGG-NJhNNNNNNk6&redirect_uri=http://localhost:3000/oauth2callback&grant_type=authorization_code" https://oauth2.googleapis.com/token
+curl --request POST --data "code=4\\F0AVVVVVVVVVVVg&client_id=724425579317-si0un8een9u1v08gu6nbihe5uopjs0mp.apps.googleusercontent.com&client_secret=GOGGG-NJhNNNNNNk6&redirect_uri=http://localhost:3000/oauth2callback&grant_type=authorization_code" https://oauth2.googleapis.com/token
 ```
 
 Then retrieve the refresh token.
@@ -114,12 +114,13 @@ Authorized redirect URIs: http://localhost:3000/oauth2callback, http://localhost
 
 -Extract the Client ID: 11111111111-222222222222222nbv.apps.googleusercontent.com
 Client secret: GGGGGG-NNNNNNNNNNNNN6
--Inside oAuth Consent Screen, add the use email
+-Inside oAuth Consent Screen, add the user email
 
 b) Retrieve refresh token
 
 - Go to https://developers.google.com/oauthplayground
 - Select config icon, upper right corner:
+-Access type: offline
 -Enable Use your own OAuth credentials and paste Client ID and Secret
 
 -Select and authorize APIS:
@@ -128,6 +129,7 @@ https://www.googleapis.com/auth/youtube
 YouTube Data API v3 v3
 https://www.googleapis.com/auth/youtube
 https://www.googleapis.com/auth/youtube.upload
+
 
 -Click Exchange authorization code for tokens
 -Retrieve refresh token
@@ -145,16 +147,73 @@ https://www.googleapis.com/auth/youtube.upload
 -Go to Actions and run the Create a Video workflow.
 
 ### Run locally
--Ensure that props.json has the correct props. 
--npx remotion preview ./video/src/index.tsx --props=./props.json   
--npx remotion render ./video/src/index.tsx Main out.mp4 --props=./props.json
+- Ensure that props.json has the correct props. 
+- npx remotion preview ./video/src/index.tsx --props=./props.json   
+- npx remotion render ./video/src/index.tsx Main out.mp4 --props=./props.json
 
+###Run server locally
+python3 -m pip install --upgrade pip
+
+python3 -m venv myenv
+source myenv/bin/activate
+deactivate
+
+**Run python endpoints**
+cd server
+source myenv/bin/activate
+python3 app.py 
+
+**Create Fast API**
+pip install fastapi uvicorn mangum
+pip freeze > requirements.txt
+Erase everything but 
+fastapi==0.89.1
+mangum==0.17.0
+
+Once the server is completed
+uvicorn main:app --reload 
+- or -
+uvicorn main:app --host 127.0.0.1 --port 8000
+The app will run here ->  http://127.0.0.1:8000/docs
+
+Create dependencies for AWS Lambda
+pip3 install -t dependencies -r requirements.txt
+A new dependencies directory will show up
+
+Bundle to create a lambda artifact
+(cd dependencies; zip ../aws_lambda_artifact.zip -r .)
+
+Update the artifact with our server app
+zip aws_lambda_artifact.zip -u main.py
+
+Upload the artifact in Lambda
+and change handler to -> main.handler
 
 **Use CLI**
 
 ```sh-session
 $ ./bin/dev --help
 ```
+
+.VSCODE -> launch.json
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+        "type": "node",
+        "request": "launch",
+        "name": "Launch Program",
+        "program": "${workspaceFolder}/bin/dev",
+        "args": [
+            "create",
+            "youtube",
+            "-t",
+            "--upload"
+        ]
+        }
+    ]
+    }
+
 
 ## 📝 License
 

@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react';
 import {
     interpolate,
     Sequence,
+    Series,
     useCurrentFrame,
     useVideoConfig,
     getInputProps,
@@ -8,27 +10,50 @@ import {
     Audio, 
     Video,
     staticFile,
-    AbsoluteFill
+    AbsoluteFill,
+    delayRender,
+    continueRender
 } from 'remotion';
+import axios from 'axios';
+import * as fs from 'fs';
+import { getVideoMetadata } from "@remotion/media-utils";
 import { Title } from './Podcast/Title';
+import { Background } from './Podcast/Background';
+import { Character } from './Podcast/Character';
 import { AudioWaveform } from './Podcast/AudioWaveform';
+import { VideoSegment } from './Podcast/VideoSegment';
 import { Transition } from './Podcast/Transition';
 import { Logo } from './Podcast/Logo';
 import { Intro } from './Podcast/Intro';
 import { Wrapper } from './Wrappers/index';
 import InterfaceJsonContent from '../../src/models/InterfaceJsonContent';
-import meditation from '../../assets/meditation1.mp3';
+import audio1 from '../../assets/voice-test.mp3';
 import background from '../../assets/background1.mp4';
+import videoIntro from '../../assets/intro_green.mp4';
+import videoOutro from '../../assets/outro_green.mp4';
 import introBackground from '../../assets/intro_background.jpg';
+import { log } from 'console';
 
 const { withoutIntro } = getInputProps();
 
+
 export const Main: React.FC<{
     content: InterfaceJsonContent
-}> = ({ content: { renderData, date, title, youtube } }) => {
+}> = ({ content: { renderData,renderSentences,  date, title, youtube } }) => {
+    console.log('Main Content received >>>>>',renderData, date, title, youtube );
     if (!renderData) {
         throw new Error('Missing renderData');
     }
+    const [handle] = useState(() => delayRender());
+    const [videoDurationIntro, setDurationIntro] = useState(1);
+    const [videoDurationOutro, setDurationOutro] = useState(1);
+    const [videoDuration, setDuration] = useState(1);
+    const [transcription, setTranscription] = useState('');
+
+    const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+    const AUDIO_FILE_PATH = '/workspaces/automation-engine-aiu/assets/audio1.mp3';
+    const MODEL = 'whisper-1';
+    
 
     const frame = useCurrentFrame();
     const { fps, durationInFrames } = useVideoConfig();
@@ -40,6 +65,39 @@ export const Main: React.FC<{
 
     let initialFrame = 70;
     let nextInitialFrame = initialFrame;
+    
+
+    useEffect(() => {
+        getVideoMetadata(background)
+          .then(({ durationInSeconds }) => {
+            setDuration(Math.round(durationInSeconds * 30));
+            continueRender(handle);
+          }) .catch((err) => {
+            console.log(`Error fetching metadata: ${err}`);
+          });
+    }, [handle]);
+
+    useEffect(() => {
+        getVideoMetadata(videoIntro)
+          .then(({ durationInSeconds }) => {
+            setDurationIntro(Math.round(durationInSeconds * 30));
+            continueRender(handle);
+          }) .catch((err) => {
+            console.log(`Error fetching metadata: ${err}`);
+          });
+    }, [handle]);
+
+    useEffect(() => {
+        getVideoMetadata(videoOutro)
+          .then(({ durationInSeconds }) => {
+            setDurationOutro(Math.round(durationInSeconds * 30));
+            continueRender(handle);
+          }) .catch((err) => {
+            console.log(`Error fetching metadata: ${err}`);
+          });
+    }, [handle]);
+
+      
 
     const opacity = interpolate(
         frame,
@@ -81,141 +139,20 @@ export const Main: React.FC<{
 
     return (
         <div style={{flex: 1,}} >
-            <Sequence from={0}><Audio src={meditation}  loop={true} volume={0.2}/></Sequence>
-            <Sequence from={initialFrame/2}><Video src={background}  loop={true}/></Sequence>
-            
-            <div style={{ opacity }}>
-                <AbsoluteFill
-                    style={{
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexDirection: 'row',
-                        fontSize: 100,
-                        fontFamily: 'nunito',
-                    }}
-                >
-                <div style={{
-                    top:0,
-                    left:0,
-                    position:'absolute',
-                }}><Logo /></div>
-                <Sequence
-                            key={`0-Initial`}
-                            from={0}
-                            durationInFrames={initialFrame}
-                    >
-                        <div
-                                style={{
-                                    background: 'black',
-                                    width: '100%',
-                                    height: '100%',
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    opacity:opacityBackground
-                                }}
-                            >
-                        <div
-                                style={{
-                                    background: 'linear-gradient(to bottom, #2193b0, #a6fbff)',
-                                    backgroundImage: `url(${introBackground})`,
-                                    backgroundSize: '100% 100%',
-                                    width: '100%',
-                                    height: '100%',
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    opacity: opacityIntro
-                                }}
-                            >
-                            <h3 style={{
-                                    fontFamily: 'Nunito',
-                                    alignSelf: 'center',
-                                    margin: 0,
-                                    textAlign: 'center',
-                                    color: '#ffffffd1'
-                                    //fontVariant: 'all-small-caps'
-                                }}
-                            >Welcome to <br/> The Daily Calm  
-                            </h3>
-                        </div>
-                        </div>
-                    </Sequence>
-                    
-                </AbsoluteFill>
-
-                {renderData.map((prop, index) => {
-                    const textDuration = Math.round(prop.duration * fps);
-
-                    initialFrame = nextInitialFrame;
-                    nextInitialFrame =
-                        initialFrame +
-                        transitionDurationInFrames +
-                        textDuration;
-
-                    if (index === 0 && !withoutIntro) {
-                        return (
-                            <>
-                                <Sequence
-                                    key={`${initialFrame}-Intro`}
-                                    from={initialFrame}
-                                    durationInFrames={textDuration}
-                                >
-                                    <Intro
-                                        date={date}
-                                        audioFilePath={prop.audioFilePath}
-                                        title={title}
-                                        details={{subscribers: youtube?.subscriberCount }}
-                                    />
-                                    <Logo />
-                                </Sequence>
-                                {/*index < renderData.length - 1 ? (
-                                    <Sequence
-                                        key={`${initialFrame}-Transition`}
-                                        from={initialFrame + textDuration}
-                                        durationInFrames={
-                                            transitionDurationInFrames
-                                        }
-                                    >
-                                        <Transition />
-                                    </Sequence>
-                                    ) : null*/}
-                            </>
-                        );
-                    }
-
-                    return (
-                        <>
-                            <Sequence
-                                key={`${initialFrame}-Title`}
-                                from={initialFrame}
-                                durationInFrames={textDuration}
-                            >
-                                <Wrapper
-                                    title={title}
-                                    show={index === showWrapperOnIndex}
-                                >
-                                    <Logo />
-                                    <Title segments={prop.segments} />
-                                    <AudioWaveform
-                                        audioFilePath={prop.audioFilePath}
-                                    />
-                                </Wrapper>
-                            </Sequence>
-                            {/*index < renderData.length - 1 ? (
-                                <Sequence
-                                    key={`${initialFrame}-Transition`}
-                                    from={initialFrame + textDuration}
-                                    durationInFrames={
-                                        transitionDurationInFrames
-                                    }
-                                >
-                                    <Transition />
-                                </Sequence>
-                                ) : null*/}
-                        </>
-                    );
-                })}
-
-            </div>
+            <Series>
+                <Series.Sequence durationInFrames={videoDurationIntro}>
+                    <VideoSegment src={videoIntro}/>
+                </Series.Sequence>
+                <Series.Sequence durationInFrames={videoDuration}>
+                    <Background data={renderSentences}/>
+                    <Character data={renderSentences} src={videoIntro}/>
+                    <Title data={renderData} />
+                    <Audio src={audio1}  />
+                </Series.Sequence>
+                <Series.Sequence durationInFrames={videoDurationOutro}>
+                    <VideoSegment src={videoOutro}/>
+                </Series.Sequence>
+            </Series>
         </div>
     );
 };

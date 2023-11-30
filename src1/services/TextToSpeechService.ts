@@ -10,7 +10,9 @@ import {
     SpeechSynthesisBoundaryType,
 } from 'microsoft-cognitiveservices-speech-sdk';
 import path from 'path';
+import {Configuration, OpenAIApi} from 'openai';
 import fs from 'fs';
+import axios, { AxiosResponse } from 'axios';
 
 import { error, log } from '../utils/log';
 import { getPath } from '../config/defaultPaths';
@@ -42,6 +44,7 @@ class TextToSpeechService {
     private content: InterfaceJsonContent;
 
     constructor(content: InterfaceJsonContent) {
+        log(`${JSON.stringify(content)}`, 'InitialContent');
         this.content = content;
 
         if (!process.env.AZURE_TTS_KEY) {
@@ -66,7 +69,7 @@ class TextToSpeechService {
         synthesizeIntro?: boolean;
         synthesizeEnd?: boolean;
     }): Promise<InterfaceJsonContent> {
-        const synthesizePromises: Promise<void>[] = [];
+        /*const synthesizePromises: Promise<void>[] = [];
 
         if (synthesizeIntro) {
             synthesizePromises.push(this.synthesizeIntro());
@@ -78,9 +81,62 @@ class TextToSpeechService {
 
         if (synthesizeEnd) {
             await this.synthesizeEnd()
-        }
-        log(`${JSON.stringify(this.content)}`, 'TextToSpeechService');
+        }*/
+        await this.synthesizeOpenAI()
+        //log(`${JSON.stringify(this.content)}`, 'TextToSpeechService');
         return this.content;
+    }
+
+    private async synthesizeOpenAI(): Promise<void> {
+        const configuration = new Configuration({
+            apiKey: process.env.OPENAI_API_KEY,
+          });
+
+        const tmpPath = await getPath('assets');
+        const audioFilePath = path.resolve(tmpPath, 'voice-test.mp3');
+        let segments = [];
+        let text = '';
+        log(`Audio file path: ${audioFilePath}`, 'TextToSpeechService');
+
+        //const transcribeAudio = async (fileName) => {
+            try {
+              //const response = await axios.get('http://127.0.0.1:8000/transcribe',  { params: { fileName: 'voice-test.mp3'},
+              //headers: {'Access-Control-Allow-Origin': '*', 'X-Requested-With': 'XMLHttpRequest'}});
+              
+              const contentPath = await getPath('assets');
+              const response = require(`${contentPath}/datatest.json`);
+              log(`Reading Segments: ${JSON.stringify(response)}`, 'TextToSpeechService');
+              //@ts-ignore
+              //segments = response.data.message.segments; 
+              segments = response.message.segments; 
+              //@ts-ignore
+              //text = response.data.message.text; 
+              text = response.message.text; 
+            } catch (error) {
+              console.error('Error transcribing audio:', error);
+            }
+          //};
+
+          //transcribeAudio('voice-test.mp3');
+
+        if (typeof this.content.renderData !== 'object') {
+            error('Render data is not defined', 'TextToSeechService');
+            throw new Error('Render data is not defined');
+        }
+
+        log('Synthesizing Whisper', 'TextToSpeechService');
+        /*const { audioFilePath, segments, duration } = await this.synthesize(
+            this.content.end.text,
+            'end',
+        );*/
+
+        //propsPreview.content = this.content;
+        this.content.renderData.push({
+            text,
+            duration:19596,
+            audioFilePath,
+            segments
+        });  
     }
 
     private async synthesizeIntro(): Promise<void> {
@@ -149,16 +205,6 @@ class TextToSpeechService {
             this.content.end.text,
             'end',
         );
-
-
-        //propsPreview.content = this.content;
-        const rawData = fs.readFileSync('./props.json');
-        const data = JSON.parse(rawData.toString());
-        // Modify the value
-        data.content = this.content;
-        // Write the modified data back to the file
-        fs.writeFileSync('./props.json', JSON.stringify(data));
-
 
         this.content.renderData.push({
             text: this.content.end.text,

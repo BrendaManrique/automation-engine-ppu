@@ -1,4 +1,5 @@
 import GetContentService from './GetContentService';
+import ContentProcessService from './ContentProcessService';
 import TextToSpeechService from './TextToSpeechService';
 import ExportDataService from './ExportDataService';
 import RenderVideoService from './RenderVideoService';
@@ -26,4 +27,5 @@ export {
     ValidatesContentService,
     MailToJsonService,
     GetYoutubeinfoService,
+    ContentProcessService,
 };

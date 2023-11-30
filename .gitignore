@@ -11,6 +11,7 @@ build/
 out/
 remote-repo/
 coverage/
+server/
 .module-cache
 fixtures/dom/public/react-dom.js
 fixtures/dom/public/react.js

@@ -97,7 +97,7 @@ export default class YoutubeUploadService {
             oauth2client.refreshAccessToken((err, token: any) => {
                 if (err || !token) {
                     error(
-                        `Failed at refreshing youtube token \n${JSON.stringify(
+                        `[YoutubeUploadService] Failed at refreshing youtube token \n${JSON.stringify(
                             err,
                         )}`,
                         'YoutubeUploadService',
