@@ -10,7 +10,7 @@ import {
     SpeechSynthesisBoundaryType,
 } from 'microsoft-cognitiveservices-speech-sdk';
 import path from 'path';
-import {Configuration, OpenAIApi} from 'openai';
+import OpenAI from 'openai';
 import fs from 'fs';
 import axios, { AxiosResponse } from 'axios';
 
@@ -88,7 +88,7 @@ class TextToSpeechService {
     }
 
     private async synthesizeOpenAI(): Promise<void> {
-        const configuration = new Configuration({
+        const openai = new OpenAI({
             apiKey: process.env.OPENAI_API_KEY,
           });
 

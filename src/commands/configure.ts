@@ -1,4 +1,4 @@
-import { Command, CliUx } from '@oclif/core';
+import { Command, ux } from '@oclif/core';
 import { which, ln } from 'shelljs';
 
 import { saveSecrets } from '../config/secrets';
@@ -9,7 +9,7 @@ export default class Configure extends Command {
     static examples = ['<%= config.bin %> <%= command.id %>'];
 
     public async run(): Promise<void> {
-        const { prompt, confirm } = CliUx.ux;
+        const { prompt, confirm } = ux;
 
         const envs = {
             DEBUG: 0,

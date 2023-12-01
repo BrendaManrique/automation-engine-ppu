@@ -14,7 +14,7 @@ import fs from 'fs';
 import axios, { AxiosResponse } from 'axios';
 import fetch, {Headers} from 'node-fetch'
 import { createClient } from 'pexels';
-//import { Configuration, OpenAIApi } from 'openai';
+import OpenAI from 'openai';
 
 import { error, log } from '../utils/log';
 import { getPath } from '../config/defaultPaths';
@@ -39,8 +39,7 @@ class ContentProcessService {
     constructor(content: InterfaceJsonContent) {
         this.content = content;
         this.sentences = [];
-        const { Configuration, OpenAIApi } = require("openai");
-        this.configuration = new Configuration({
+        this.openai = new OpenAI({
             organization: process.env.OPENAI_API_ORG,
             apiKey: process.env.OPENAI_API_KEY,
         });
@@ -51,7 +50,7 @@ class ContentProcessService {
         }
 
         this.openAIKey = process.env.OPENAI_API_KEY;
-        this.openai = new OpenAIApi(this.configuration);
+        this.openai = new OpenAI(this.configuration);
         //@ts-ignore
         this.pexelsClient = createClient(process.env.PEXELS_API_KEY);
     }
@@ -155,7 +154,6 @@ class ContentProcessService {
         log('ProcessWithOpenAI', 'ContentProcessService');
        
         try {
-            
             const userInput = this.sentences;
             const prompt = `Considering all sentences as background context. For each one of the sentences in ${JSON.stringify(userInput)}, extract at least 10 keywords into a comma separated list, extract bullet points into a comma separated list. Also, for each sentence, compose a prompt describing an imaginary scene based on the sentence. The keywords should be in present tense.  If the sentence is a transition sentence or phrase, leave the keywords empty. `;
             const schema = {
@@ -187,8 +185,6 @@ class ContentProcessService {
                     }
                 }
             }}
-
-
             const data = {
                 model: "gpt-3.5-turbo-0613",
                 messages: [
@@ -200,7 +196,7 @@ class ContentProcessService {
 
               log(`${JSON.stringify(data)}`, 'ContentProcessService-ChatGPTCall');
 
-            const completion = await this.openai.createChatCompletion(data);
+            const completion = await this.openai.chat.completions.create(data);
             const generatedText = completion.data.choices[0].message.function_call.arguments;
             log(`${generatedText}`, 'ContentProcessService-ChatGPTResponse');
             
@@ -215,9 +211,17 @@ class ContentProcessService {
 
             log(`${this.content['renderSentences']}`, 'ContentProcessService-RenderData');
             
-            
         } catch (error) {
             log(`Error processing with ChatGPT:${error}`, 'ContentProcessService');
+            if (error instanceof OpenAI.APIError) {
+                console.error(error.status);  // e.g. 401
+                console.error(error.message); // e.g. The authentication token you passed was invalid...
+                console.error(error.code);  // e.g. 'invalid_api_key'
+                console.error(error.type);  // e.g. 'invalid_request_error'
+              } else {
+                // Non-API error
+                console.log(error);
+              }
         }
     }
 
