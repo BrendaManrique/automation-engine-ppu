@@ -245,10 +245,11 @@ class ContentProcessService {
             
                 let outputVideoPath = '';
                 let pexelsUrl  = '';
-                if(!!response.videos ){
+                /*if(!!response.videos ){
                     const pexelsUrl = response.videos[0].video_files[0].link;
                     //const pexelsUrl = "https://player.vimeo.com/external/516260402.hd.mp4?s=337a95a1b2fc99043000e6e07938fdf891bf7287&profile_id=172&oauth2_token_id=57447761";
                     // download and save video in a temporary directory
+                    
                     outputVideoPath = path.resolve(
                         tmpPath,
                         `short_video_${idx}.mp4`,
@@ -265,7 +266,7 @@ class ContentProcessService {
 
                 } else {
                     log(`Error retrieving videos: ${response}`, 'ContentProcessService-PexelsCall');
-                }
+                }*/
                 
                 this.content['renderSentences'][idx]['resourceUrl'] = pexelsUrl;//`short_video_${idx}.mp4`;
                 log(`Retrieved Url ${idx}: - ${outputVideoPath}`, 'ContentProcessService-PexelsCall');

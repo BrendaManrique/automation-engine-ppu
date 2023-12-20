@@ -8,7 +8,7 @@
         "strict": true,
         "noImplicitAny": false,
         "strictPropertyInitialization": false,
-        "baseUrl": "videoDemo",
+        "baseUrl": "src",
         "allowJs": true,
         "types": ["node"],
         "esModuleInterop": true,
@@ -20,5 +20,5 @@
         "importHelpers": true,
         "lib": ["es2022", "DOM"]
     },
-    "include": ["videoDemo/**/*", "video/**/*", "assets/**/*", "remotion.config.ts"]
+    "include": ["src/**/*", "video/**/*", "assets/**/*", "remotion.config.ts"]
 }

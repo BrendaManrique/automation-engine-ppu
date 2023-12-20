@@ -15,8 +15,8 @@ import {
     continueRender
 } from 'remotion';
 import axios from 'axios';
-import * as fs from 'fs';
 import { getVideoMetadata } from "@remotion/media-utils";
+
 import { Title } from './Podcast/Title';
 import { Background } from './Podcast/Background';
 import { Character } from './Podcast/Character';
@@ -26,13 +26,12 @@ import { Transition } from './Podcast/Transition';
 import { Logo } from './Podcast/Logo';
 import { Intro } from './Podcast/Intro';
 import { Wrapper } from './Wrappers/index';
-import InterfaceJsonContent from '../../videoDemo/models/InterfaceJsonContent';
+import InterfaceJsonContent from '../../src/models/InterfaceJsonContent';
 import audio1 from '../../assets/voice-test.mp3';
-import background from '../../assets/background1.mp4';
+import background from '../../assets/teacher_green.mp4';
 import videoIntro from '../../assets/intro_green.mp4';
 import videoOutro from '../../assets/outro_green.mp4';
 import introBackground from '../../assets/intro_background.jpg';
-import { log } from 'console';
 
 const { withoutIntro } = getInputProps();
 

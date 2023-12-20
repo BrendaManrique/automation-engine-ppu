@@ -2,7 +2,7 @@ import { log } from 'console';
 import Segment from 'models/Segments';
 import { useCallback, useMemo, useRef } from 'react';
 import {Video,Easing, interpolate, Sequence, spring, useCurrentFrame, useVideoConfig, staticFile, OffthreadVideo} from 'remotion';
-
+import background from '../../../assets/teacher_green.mp4';
 import img1 from '../../../assets/renderimg1.png';
 
 export const Background: React.FC<{
@@ -33,8 +33,11 @@ export const Background: React.FC<{
 		config: {mass: 1, damping: 1000},
 	});
 
-		const buildSegments = useMemo(() => {
+		const buildSegments = useMemo(() => { 
 			return data.map(({sentence, start, end,resourceUrl}, index) => {
+					console.log("RESOURCE URL:",resourceUrl, staticFile(resourceUrl));
+					resourceUrl = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+
 					const startInFrames = start / (1000 / videoConfig.fps) * 1000;
 					const endInFrames = end / (1000 / videoConfig.fps) * 1000;
 					const wordShouldAppear = frame >= startInFrames && frame < endInFrames;
@@ -80,7 +83,7 @@ export const Background: React.FC<{
 						};
 
 						return (
-								<OffthreadVideo
+								<Video
 										key={`video-${resourceUrl}`}
 										//src={staticFile(resourceUrl)}
 										src={resourceUrl}

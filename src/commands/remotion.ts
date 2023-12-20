@@ -1,7 +1,6 @@
 import { Command, Flags, Args } from '@oclif/core';
 //import { GetContentService } from '../services';
 import shell from 'shelljs';
-import fs from 'fs';
 
 export default class Remotion extends Command {
     static description = 'Remotion framework related commands';
@@ -26,23 +25,13 @@ export default class Remotion extends Command {
         options: ['upgrade', 'preview', 'render-example', 'render-demo','render-thumb-example']}),
       }
 
-    /*static args = [
-        {
-            name: 'command',
-            required: true,
-            description: 'Command to run',
-            options: ['upgrade', 'preview', 'render-example', 'render-demo','render-thumb-example'],
-        },
-    ];*/
-
     public async run(): Promise<void> {
         const { args, flags } = await this.parse(Remotion);
         let content = {};
 
-        if(args.command === 'render-demo'){
-            const rawData = fs.readFileSync('./props.json');
-            content = JSON.parse(rawData.toString())['content'];
-        } /*else {
+        /*if(args.command === 'render-demo'){
+            
+        } else {
             content = await new GetContentService().execute(flags.filename)['content'] || undefined;
             if (!content || !content['renderData']) {
                 throw new Error('Content not found');
@@ -51,12 +40,12 @@ export default class Remotion extends Command {
         
         const durationInFrames = Math.round(this.getFullDuration(content['renderData']) * content['fps'])
 
-
         const props = {
             content,
             destination: 'youtube',
             durationInFrames,
         }
+
         let command = '';
 
         switch (args.command) {
@@ -70,7 +59,7 @@ export default class Remotion extends Command {
                 command = `yarn remotion render video/src/index.tsx Main out.mp4 --props='${JSON.stringify(props)}'`;
                 break;
             case 'render-demo':
-                command = `yarn remotion render videoDemo/index.ts HelloWorld out/video.mp4 --props='{}'`;
+                command = `yarn remotion render video/src/index.js Main out/video.mp4 --props=./props.json`;
                 break;
             case 'render-thumb-example':
                 command = `yarn remotion still video/src/index.tsx Thumbnail thumb.png --props='${JSON.stringify(props)}'`;
@@ -84,7 +73,7 @@ export default class Remotion extends Command {
         duration: number;
     }[]): number {
         const transitionDurationInSeconds = 2.9;
-
+        
         return renderData.reduce(
             (accumulator, currentValue, index) => {
                 if (
