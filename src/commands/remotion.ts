@@ -1,5 +1,5 @@
 import { Command, Flags, Args } from '@oclif/core';
-//import { GetContentService } from '../services';
+import { GetContentService } from '../services';
 import shell from 'shelljs';
 
 export default class Remotion extends Command {
@@ -29,14 +29,11 @@ export default class Remotion extends Command {
         const { args, flags } = await this.parse(Remotion);
         let content = {};
 
-        /*if(args.command === 'render-demo'){
-            
-        } else {
-            content = await new GetContentService().execute(flags.filename)['content'] || undefined;
-            if (!content || !content['renderData']) {
-                throw new Error('Content not found');
-            }
-        }*/
+        
+        content = await new GetContentService().execute(flags.filename)['content'] || undefined;
+        if (!content || !content['renderData']) {
+            throw new Error('Content not found');
+        }
         
         const durationInFrames = Math.round(this.getFullDuration(content['renderData']) * content['fps'])
 

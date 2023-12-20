@@ -84,6 +84,7 @@ class RenderVideoService {
     }
 
     private getFullDuration(): number {
+        log('---->', `${this.content}`);
         if (!this.content.renderData) {
             error('RenderData is undefined', 'RetrieveAudioDataService');
             process.exit(1);

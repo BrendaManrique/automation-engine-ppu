@@ -1,12 +1,17 @@
-{"durationInFrames":1400,
+{"durationInFrames":800,
 "destination":"youtube",
 "content":
-{"title":"First automation test.","fps":30,"timestamp":1680102356,"width":1080,"height":1920,"date":"29/03/2023",
-"intro":
-{"text":"Welcome to the test"},
+{"title":"First automation test.",
+"fps":30,
+"timestamp":1680102356,
+"width":1080,
+"height":1920,
+"date":"29/03/2023",
+"intro":{"text":"Welcome to the test"},
 "end":{"text":"Thanks for watching.","url":"https://bit.ly/newsletter"},
 "news":[{"text":"Welcome to your meditation practice.","url":""}],
-"renderData":[{"text":" Finding a problem worth solving is the cornerstone of any successful business. Your goal as an entrepreneur is to identify a problem that is significant, widespread, and most importantly, lacks an effective solution. Think about it like a detective. You're searching for clues in everyday life, problems that people face inefficiencies, gaps in the market. For example, maybe you've noticed that a lot of people in your city struggle with finding healthy meal options that are also convenient and affordable. That's a problem you could solve with a healthy food delivery startup. It's important to remember that the best problems to solve are ones that you are passionate about and have some knowledge of. Why? Because you'll be spending a lot of time working on it. So, choose a problem that you care about and are excited to tackle.",
+"renderData":[
+    {"text":" Finding a problem worth solving is the cornerstone of any successful business. Your goal as an entrepreneur is to identify a problem that is significant, widespread, and most importantly, lacks an effective solution. Think about it like a detective. You're searching for clues in everyday life, problems that people face inefficiencies, gaps in the market. For example, maybe you've noticed that a lot of people in your city struggle with finding healthy meal options that are also convenient and affordable. That's a problem you could solve with a healthy food delivery startup. It's important to remember that the best problems to solve are ones that you are passionate about and have some knowledge of. Why? Because you'll be spending a lot of time working on it. So, choose a problem that you care about and are excited to tackle.",
     "duration":19596,"audioFilePath":"/Users/brendamanrique/Documents/Projects/automation-engine-aiu/assets/voice-test.mp3",
     "segments":[{"avg_logprob":-0.1435735204198339,"compression_ratio":1.6493506493506493,"end":4.32,"id":0,"no_speech_prob":0.006564809940755367,"seek":0,"start":0,"temperature":0,"text":" Finding a problem worth solving is the cornerstone of any successful business.","tokens":[50363,27063,257,1917,2861,18120,318,262,39774,286,597,4388,1597,13,50579]},
         {"avg_logprob":-0.1435735204198339,"compression_ratio":1.6493506493506493,"end":9.040000000000001,"id":1,"no_speech_prob":0.006564809940755367,"seek":0,"start":4.32,"temperature":0,"text":" Your goal as an entrepreneur is to identify a problem that is significant, widespread,","tokens":[50579,3406,3061,355,281,19500,318,284,5911,257,1917,326,318,2383,11,10095,11,50815]},
