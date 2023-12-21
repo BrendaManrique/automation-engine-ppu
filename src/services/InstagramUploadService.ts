@@ -1,4 +1,4 @@
-import puppeteer from 'puppeteer';
+//import puppeteer from 'puppeteer';
 
 import { error, log } from '../utils/log';
 import InterfaceJsonContent from '../models/InterfaceJsonContent';
@@ -59,13 +59,14 @@ export default class InstagramUploadService {
     ): Promise<void> {
         const details = this.getDetails();
 
-        const browser = await puppeteer.launch({
+        const browser = {}/*await puppeteer.launch({
             executablePath: this.chromeExecutablePath,
             headless: false,
             defaultViewport: null as any,
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
-        });
+        });*/
 
+        //@ts-ignore
         const page = await browser.newPage();
 
         await page.goto(this.urls.login);

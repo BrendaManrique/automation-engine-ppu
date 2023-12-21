@@ -40,6 +40,9 @@ export default class CreateThumbnailService {
                 fps: this.content.fps,
                 height: format[videoFormat].height,
                 width: format[videoFormat].width,
+                defaultProps:{},
+                props: {}, 
+                defaultCodec:'h264'
             },
             imageFormat: 'jpeg',
         });

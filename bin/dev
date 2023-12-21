@@ -6,6 +6,7 @@
   //await import('tsx')
 
   process.env.NODE_ENV = 'development'
+  //oclif.settings.debug = true;
 
   await oclif.execute({development: true, dir: __dirname})
 })()

@@ -15,14 +15,15 @@ const {
     content, 
     durationInFrames
  }: { 
-    content: InterfaceJsonContent,
-    durationInFrames: number
+    content?: InterfaceJsonContent,
+    durationInFrames?: number
  } = getInputProps()
 
 export const RemotionVideo: React.FC = () => {
     //console.log(content)
     
     if (!content || !content.renderData || !durationInFrames) {
+        //@ts-ignore
         throw new Error(`Missing information. Content: ${!!content}, renderData: ${!!content.renderData}, durationInFrames: ${!!durationInFrames}`);
     }
 

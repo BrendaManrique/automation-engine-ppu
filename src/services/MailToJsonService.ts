@@ -1,5 +1,5 @@
 import { google } from 'googleapis';
-import { parse as parseToHtml } from 'node-html-parser';
+//import { parse as parseToHtml } from 'node-html-parser';
 import { OAuth2Client } from 'googleapis-common';
 
 import { error, log } from '../utils/log';
@@ -135,7 +135,7 @@ export default class MailToJsonService {
             'base64',
         ).toString();
 
-        const parsed = parseToHtml(htmlMail, {
+        const parsed = {}/*parseToHtml(htmlMail, {
             comment: false,
             blockTextElements: {
                 script: false,
@@ -143,9 +143,10 @@ export default class MailToJsonService {
                 style: false,
                 pre: false,
             },
-        });
+        });*/
 
         const paragraphs = parsed
+        //@ts-ignore
             .querySelectorAll('tbody p')
             .map(p => p.innerHTML);
 
@@ -156,8 +157,9 @@ export default class MailToJsonService {
             });
 
         const sanitizedText = paragraphsWithoutIntroAndLinks.map(paragraph => {
-            const p = parseToHtml(paragraph);
+            const p = {}//parseToHtml(paragraph);
 
+            //@ts-ignore
             return p.innerText
                 .replace(/\r|\n|\t/g, '')
                 .replace('      ', '')
