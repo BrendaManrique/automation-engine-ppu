@@ -139,7 +139,7 @@ export default class InstagramUploadService {
 
         await page.waitForSelector('button img');
 
-        await browser.close();
+        //await browser.close();
 
         log(`Video published on Instagram`, 'InstagramUploadService');
     }

@@ -20,10 +20,14 @@ export default class Remotion extends Command {
         }),
     }
 
-    static args = {
-        command: Args.string({description: 'Command to run', required: true,
-        options: ['upgrade', 'preview', 'render-example', 'render-demo','render-thumb-example']}),
-      }
+    static args = [
+        {
+            name: 'command',
+            required: true,
+            description: 'Command to run',
+            options: ['upgrade', 'preview', 'render-example', 'render-thumb-example'],
+        },
+    ];
 
     public async run(): Promise<void> {
         const { args, flags } = await this.parse(Remotion);

@@ -1,4 +1,4 @@
-import { Command, Flags, Args } from '@oclif/core';
+import { Command, Flags } from '@oclif/core';
 
 import { CreateConfig } from '../types';
 
@@ -44,10 +44,14 @@ export default class Create extends Command {
         }),
     };
 
-    static args = {
-        option: Args.string({description: 'Format to create content', required: true,
-        options: ['youtube', 'instagram', 'tts']})
-    }
+    static args = [
+        {
+            name: 'option',
+            required: true,
+            description: 'Format to create content',
+            options: ['youtube', 'instagram', 'tts'],
+        },
+    ];
 
     public async run(): Promise<void> {
         const { args, flags } = await this.parse(Create);

@@ -1,4 +1,4 @@
-import { Command, Flags, Args } from '@oclif/core';
+import { Command, Flags } from '@oclif/core';
 
 import { getPath } from '../config/defaultPaths';
 
@@ -18,10 +18,14 @@ export default class Info extends Command {
         }),
     };
 
-    static args = {
-        about: Args.string({description: 'About what you want infos?', required: true,
-        options:['content', 'tmp']})
-    }
+    static args = [
+        {
+            name: 'about',
+            required: true,
+            description: 'About what you want infos?',
+            options: ['content', 'tmp'],
+        },
+    ];
 
     public async run(): Promise<void> {
         const {

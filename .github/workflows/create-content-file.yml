@@ -30,6 +30,7 @@ jobs:
               run: |
                   echo "formattedDate=$(date +%d/%m/%Y)"
                   echo "bashDate=$(date +%d-%m-%Y)"
+
             - name: automation-engine CLI cache
               uses: actions/cache@v3
               id: automation-engine-cache
@@ -45,6 +46,7 @@ jobs:
               run: |
                   yarn
                   yarn build
+
             - name: Create SymLink from content directory (on code) to content directory (created by automation-engine CLI)
               run: |
                   ContentPath=$(./bin/run info content --dir)
@@ -55,11 +57,13 @@ jobs:
                   fi; 
                   echo "Creating SymLink from $(pwd)/content to $ContentPath"; 
                   ln -s $(pwd)/content $ContentPath
+
             - name: Get current date
               id: date
               run: |
                   echo "formattedDate=$(date +%d/%m/%Y)" >> $GITHUB_OUTPUT
                   echo "bashDate=$(date +%d-%m-%Y)" >> $GITHUB_OUTPUT
+            
             - name: Create Content File
               run: ./bin/run content mail
 

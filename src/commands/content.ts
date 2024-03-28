@@ -1,4 +1,4 @@
-import { Command, Args } from '@oclif/core';
+import { Command } from '@oclif/core';
 
 import {
     CreateContentTemplateService,
@@ -15,11 +15,19 @@ export default class Content extends Command {
         '<%= config.bin %> <%= command.id %> validate',
     ];
 
-    static args = {
-        command: Args.string({description: 'Command to run', required: true,
-        options:['mail', 'template', 'validate']}),
-        description: Args.string({description: 'Description of the template', required: false})
-    }
+    static args = [
+        {
+            name: 'command',
+            required: true,
+            description: 'Command to run',
+            options: ['mail', 'template', 'validate'],
+        },
+        {
+            name: 'description',
+            required: false,
+            description: 'Description of the template',
+        },
+    ];
 
     public async run(): Promise<void> {
         const { args } = await this.parse(Content);

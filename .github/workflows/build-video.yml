@@ -35,7 +35,7 @@ jobs:
               uses: actions/checkout@v3
 
             - name: Setup Node.JS environment
-              uses: actions/setup-node@main
+              uses: actions/setup-node@v3
               with:
                   node-version: 18
 
@@ -91,7 +91,7 @@ jobs:
               uses: actions/checkout@v3
 
             - name: Setup Node.JS environment
-              uses: actions/setup-node@main
+              uses: actions/setup-node@v3
               with:
                   node-version: 18
 
@@ -113,6 +113,7 @@ jobs:
               run: |
                   yarn
                   yarn build
+
             - name: Get tmp path
               id: tmp
               run: echo "tmpPath=$(./bin/run info tmp --dir)" >> $GITHUB_OUTPUT
@@ -128,6 +129,7 @@ jobs:
                 Tmp=$(./bin/run info tmp --dir)
                 echo "Linking $Tmp to public"
                 ln -sf $Tmp public
+                
             - name: Create Youtube video
               run: ./bin/run create youtube --upload
 
