@@ -16,8 +16,6 @@ import {
 } from 'react-icons/io';
 import {RiPlayListAddLine} from 'react-icons/ri';
 import {BsThreeDots} from 'react-icons/bs';
-import {format} from 'date-fns';
-import ptBR from 'date-fns/locale/pt-BR';
 
 import ytLogo from '../../../assets/YT-Logo.svg';
 import avatar from '../../../assets/Avatar.png';
@@ -328,13 +326,13 @@ export const YoutubeWrapper: React.FC<WrapperProps> = ({children, title}) => {
 									{Math.round(frame / 3)} Visualizações
 								</span>
 								<span>
-									{format(
+									{/*format(
 										new Date(),
 										"dd 'de' MMM. 'de' yyyy",
 										{
 											locale: ptBR,
 										}
-									)}
+									)*/}
 								</span>
 							</p>
 							<div>

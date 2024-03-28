@@ -39,7 +39,6 @@
         "@remotion/media-utils": "4.0.79",
         "@remotion/renderer": "4.0.79",
 		"axios": "^1.6.2",
-		"date-fns": "^3.0.1",
 		"dotenv": "^16.3.1",
 		"google-auth-library": "^9.4.1",
         "googleapis": "^129.0.0",
