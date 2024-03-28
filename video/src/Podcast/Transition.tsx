@@ -48,7 +48,7 @@ export const Transition: React.FC<{}> = () => {
 
 	return (
 		<>
-			<Audio src={transitionAudioSrc} />
+			<Audio src={transitionAudioSrc} placeholder="" onPointerEnterCapture onPointerLeaveCapture />
 			{/*<Container>
 				<div
 					style={{

@@ -1,4 +1,4 @@
-import { Command, Flags, Args } from '@oclif/core';
+import { Command, Flags } from '@oclif/core';
 import { GetContentService } from '../services';
 import shell from 'shelljs';
 

@@ -219,7 +219,7 @@ export const Intro: React.FC<{
 
 	return (
 		<>
-			<Audio src={audioSrc} />
+			<Audio src={audioSrc} placeholder="" onPointerEnterCapture onPointerLeaveCapture />
 			<AbsoluteFill
 				style={{
 					alignItems: 'center',

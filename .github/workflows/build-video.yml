@@ -83,7 +83,7 @@ jobs:
               with:
                   limit-access-to-actor: true
 
-    YouTube:
+    DeployYouTube:
         needs: [TextToSpeech]
         runs-on: ubuntu-latest
         steps:
@@ -129,7 +129,7 @@ jobs:
                 Tmp=$(./bin/run info tmp --dir)
                 echo "Linking $Tmp to public"
                 ln -sf $Tmp public
-                
+
             - name: Create Youtube video
               run: ./bin/run create youtube --upload
 

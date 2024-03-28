@@ -146,7 +146,7 @@ export const Main: React.FC<{
                     <Background data={renderSentences}/>
                     <Character data={renderSentences} src={videoIntro}/>
                     <Title data={renderData} />
-                    <Audio src={audio1}  />
+                    <Audio src={audio1} placeholder="" onPointerEnterCapture onPointerLeaveCapture />
                 </Series.Sequence>
                 <Series.Sequence durationInFrames={videoDurationOutro}>
                     <VideoSegment src={videoOutro}/>
