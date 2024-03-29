@@ -149,7 +149,7 @@ https://www.googleapis.com/auth/youtube.upload
 ### Run locally
 - Ensure that props.json has the correct props. 
 - yarn remotion preview ./video/src/index.js --props=./props.json   
-- yarn remotion render ./video/src/index.js Main out.mp4 --props=./props.json
+- yarn remotion render ./video/src/index.js Main out/out.mp4 --props=./props.json
 
 ###Run server locally
 python3 -m pip install --upgrade pip

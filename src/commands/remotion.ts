@@ -25,7 +25,7 @@ export default class Remotion extends Command {
             name: 'command',
             required: true,
             description: 'Command to run',
-            options: ['upgrade', 'preview', 'render-example', 'render-thumb-example'],
+            options: ['upgrade', 'preview', 'render-example', 'render-demo', 'render-thumb-example'],
         },
     ];
 
