@@ -13,7 +13,7 @@ export const Background: React.FC<{
 	const scaleRef = useRef(1);
 
 
-	console.log("RENDERDATA->",JSON.stringify(data));
+	console.log("RENDER DATA ->",JSON.stringify(data));
 
 	// Generate a random translation between -20 and 20 pixels
 	//const randomTranslate = useMemo(() => -10 + Math.random() * 20, []);
