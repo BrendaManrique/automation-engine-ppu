@@ -32,19 +32,21 @@ export default class Remotion extends Command {
     public async run(): Promise<void> {
         const { args, flags } = await this.parse(Remotion);
         let content = {};
+        let props = {};
 
-        
-        content = await new GetContentService().execute(flags.filename)['content'] || undefined;
-        if (!content || !content['renderData']) {
-            throw new Error('Content not found');
-        }
-        
-        const durationInFrames = Math.round(this.getFullDuration(content['renderData']) * content['fps'])
+        if(args.command != 'render-demo' ){
+            content = await new GetContentService().execute(flags.filename)['content'] || undefined;
+            if (!content || !content['renderData']) {
+                throw new Error('Content not found');
+            }
+            
+            const durationInFrames = Math.round(this.getFullDuration(content['renderData']) * content['fps'])
 
-        const props = {
-            content,
-            destination: 'youtube',
-            durationInFrames,
+            props = {
+                content,
+                destination: 'youtube',
+                durationInFrames,
+            }
         }
 
         let command = '';
