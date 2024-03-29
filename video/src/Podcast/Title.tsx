@@ -11,7 +11,7 @@ export const Title: React.FC<{
 
 	const segments: Segment[] = data[0].segments;
 
-	console.log(data);
+	console.log("RENDER DATA TITLE ->",JSON.stringify(data));
 
 	const orientation = videoConfig.width > videoConfig.height ? 'landscape' : 'portrait';
     const indexOfEndOfTitle = 0;//segments.findIndex(segment => segment.word.includes(':'))
