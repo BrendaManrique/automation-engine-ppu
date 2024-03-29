@@ -34,6 +34,7 @@ export default class Remotion extends Command {
         let content = {};
         let props = {};
 
+        //Render demo will get props directly from json file.
         if(args.command != 'render-demo' ){
             content = await new GetContentService().execute(flags.filename)['content'] || undefined;
             if (!content || !content['renderData']) {

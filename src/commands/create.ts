@@ -92,10 +92,13 @@ const youtube = async ({
     onlyUpload,
     upload,
 }: CreateConfig) => {
-    let { content, file } = await new GetContentService().execute(filename, 'portrait');
+    //let { content, file } = await new GetContentService().execute(filename, 'portrait');
+    const rawData = fs.readFileSync('./props.json');
+    const data = JSON.parse(rawData.toString());
+    const content = data.content;
 
     if (!onlyUpload) {
-        if (needTTS) {
+        /*if (needTTS) {
             const contentTts = await new TextToSpeechService(content).execute({
                 synthesizeIntro: true,
                 synthesizeEnd: true,
@@ -103,16 +106,15 @@ const youtube = async ({
             content = await new ContentProcessService(contentTts).execute({
                 content
             }, 'portrait');
-        }
+        }*/
 
         //content = await new GetYoutubeinfoService(content).execute();
 
-        const rawData = fs.readFileSync('./props.json');
-        const data = JSON.parse(rawData.toString());
+        
         // Modify the value
-        data.content = content;
+        //data.content = content;
         // Write the modified data back to the file
-        fs.writeFileSync('./props.json', JSON.stringify(data));
+        //fs.writeFileSync('./props.json', JSON.stringify(data));
 
         const bundle = await new BundleVideoService().execute();
 
@@ -137,7 +139,7 @@ const youtube = async ({
          );
     }
 
-    await new ExportDataService(content).execute(file);
+    //await new ExportDataService(content).execute(file);
 };
 
 const instagram = async ({
