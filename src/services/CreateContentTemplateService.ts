@@ -21,11 +21,11 @@ export default class CreateContentTemplateService {
 
         const template: InterfaceJsonContent = {
             title: content?.title ?? '',
-            fps: 30,
-            timestamp,
-            width: 0,
-            height: 0,
-            date: new Date().toLocaleDateString('pt-BR'),
+            //fps: 30,
+            //timestamp,
+            //width: 0,
+            //height: 0,
+            //date: new Date().toLocaleDateString('pt-BR'),
             intro: {
                 text: `Olá pessoal, sigam agora com as notícias desta ${new Date().toLocaleDateString(
                     'pt-BR',

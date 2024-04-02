@@ -218,6 +218,12 @@ $ ./bin/dev --help
     ]
 }
 
+# Problem Solving
+
+## File content not being saved
+
+- Actions -> Cache -> Delete cache
+
 
 ## 📝 License
 

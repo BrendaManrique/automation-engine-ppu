@@ -3,7 +3,8 @@ import GetContentService from './GetContentService';
 
 export default class ValidatesContentService {
     public async execute() {
-        const { content } = await new GetContentService().execute();
+        const { metadata } = await new GetContentService().execute();
+        const content = metadata.content;
 
         const errors: string[] = [];
 

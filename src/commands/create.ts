@@ -195,5 +195,5 @@ const instagram = async ({
         );
     }
 
-    await new ExportDataService(content).execute(file);
+    await new ExportDataService(metadata).execute(file);
 };
