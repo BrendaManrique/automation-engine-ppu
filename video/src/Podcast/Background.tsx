@@ -35,7 +35,7 @@ export const Background: React.FC<{
 
 		const buildSegments = useMemo(() => { 
 			return data.map(({sentence, start, end,resourceUrl}, index) => {
-					console.log("RESOURCE URL:",resourceUrl, staticFile(resourceUrl));
+					//console.log("RESOURCE URL:",resourceUrl, staticFile(resourceUrl));
 					resourceUrl = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
 
 					const startInFrames = start / (1000 / videoConfig.fps) * 1000;
