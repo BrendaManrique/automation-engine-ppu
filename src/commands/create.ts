@@ -75,7 +75,8 @@ export default class Create extends Command {
 }
 
 const tts = async ({ filename }: CreateConfig) => {
-    /*const { content, file } = await new GetContentService().execute(filename);
+    const { metadata, file } = await new GetContentService().execute(filename);
+    let content = metadata.content;
 
     const contentWithAudio = await new TextToSpeechService(content).execute({
         synthesizeIntro: true,
@@ -85,7 +86,8 @@ const tts = async ({ filename }: CreateConfig) => {
     const contentProcessed = await new ContentProcessService(content).execute({
         content: contentWithAudio
     });
-    await new ExportDataService(contentProcessed).execute(file);*/
+    metadata.content = contentProcessed;
+    await new ExportDataService(metadata).execute(file);
 };
 
 const youtube = async ({
