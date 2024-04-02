@@ -20,17 +20,17 @@ export default class GetContentService {
         log(`Getting content from ${contentFilePath}`, 'GetContentService');
 
         try {
-            const content = fs.readFileSync(contentFilePath, {
+            const metadata = fs.readFileSync(contentFilePath, {
                 encoding: 'utf-8',
             });
 
-            const jsonMetadata = JSON.parse(content) as InterfaceJsonMetadata;
+            const jsonMetadata = JSON.parse(metadata) as InterfaceJsonMetadata;
 
             if (videoFormat) {
                 jsonMetadata.width = format[videoFormat].width;
                 jsonMetadata.height = format[videoFormat].height;
             }
-        return { metadata: jsonMetadata, file: contentFilePath };
+            return { metadata: jsonMetadata, file: contentFilePath };
         } catch {
             error(`${contentFilePath} not found`, 'GetContentService');
             process.exit(1);
