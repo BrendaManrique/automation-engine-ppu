@@ -131,7 +131,8 @@ jobs:
                 ln -sf $Tmp public
 
             - name: Create Youtube video
-              run: ./bin/run create youtube --upload
+              run: ./bin/run create youtube -f demo-content.json -l -u -t
+              #run: ./bin/run create youtube --upload
 
             - name: Save video in Artifacts
               if: ${{ failure() }}
