@@ -57,16 +57,16 @@ export default class Remotion extends Command {
                 command = 'yarn remotion upgrade';
                 break;
             case 'preview':
-                command = `yarn remotion preview video/src/index.tsx --props='${JSON.stringify(props)}'`;
+                command = `yarn remotion preview video/src/index.js --props='${JSON.stringify(props)}'`;
                 break;
             case 'render-example':
-                command = `yarn remotion render video/src/index.tsx Main out.mp4 --props='${JSON.stringify(props)}'`;
+                command = `yarn remotion render video/src/index.js Main out.mp4 --props='${JSON.stringify(props)}'`;
                 break;
             case 'render-demo':
                 command = `yarn remotion render video/src/index.js Main out/video.mp4 --props=demo-content.json`;
                 break;
             case 'render-thumb-example':
-                command = `yarn remotion still video/src/index.tsx Thumbnail thumb.png --props='${JSON.stringify(props)}'`;
+                command = `yarn remotion still video/src/index.js Thumbnail thumb.png --props='${JSON.stringify(props)}'`;
                 break;
         }
 

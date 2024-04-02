@@ -23,17 +23,12 @@ export default class Create extends Command {
 
     static examples = [
         '<%= config.bin %> <%= command.id %> youtube -u -t',
-        '<%= config.bin %> <%= command.id %> youtube -f demo-content.json -l -u -t'];
+        '<%= config.bin %> <%= command.id %> youtube -f demo-content.json -u -t'];
 
     static flags = {
         filename: Flags.string({
             char: 'f',
             description: 'filename with content',
-        }),
-        isLocalFile: Flags.boolean({
-            char: 'l',
-            description:
-                "is file from content located in ./props.json",
         }),
         needTTS: Flags.boolean({
             char: 't',
@@ -63,14 +58,14 @@ export default class Create extends Command {
     public async run(): Promise<void> {
         const { args, flags } = await this.parse(Create);
 
-        const { filename, isLocalFile, needTTS, upload, onlyUpload } = flags;
+        const { filename, needTTS, upload, onlyUpload } = flags;
 
         switch (args.option) {
             case 'tts':
                 await tts({ filename });
                 break;
             case 'youtube':
-                await youtube({ filename, isLocalFile, needTTS, upload, onlyUpload });
+                await youtube({ filename, needTTS, upload, onlyUpload });
                 break;
             case 'instagram':
                 await instagram({ filename, needTTS, upload, onlyUpload });
@@ -80,7 +75,7 @@ export default class Create extends Command {
 }
 
 const tts = async ({ filename }: CreateConfig) => {
-    const { content, file } = await new GetContentService().execute(filename);
+    /*const { content, file } = await new GetContentService().execute(filename);
 
     const contentWithAudio = await new TextToSpeechService(content).execute({
         synthesizeIntro: true,
@@ -90,17 +85,16 @@ const tts = async ({ filename }: CreateConfig) => {
     const contentProcessed = await new ContentProcessService(content).execute({
         content: contentWithAudio
     });
-    await new ExportDataService(contentProcessed).execute(file);
+    await new ExportDataService(contentProcessed).execute(file);*/
 };
 
 const youtube = async ({
     filename,
-    isLocalFile,
     needTTS,
     onlyUpload,
     upload,
 }: CreateConfig) => {
-    let { metadata, file } = await new GetContentService().execute(filename, isLocalFile, 'portrait');
+    let { metadata, file } = await new GetContentService().execute(filename, 'portrait');
     let content = metadata.content;
 
     // Read Props
@@ -154,17 +148,16 @@ const youtube = async ({
          );
     }
 
-    await new ExportDataService(content).execute(file, isLocalFile);
+    await new ExportDataService(metadata).execute(file );
 };
 
 const instagram = async ({
     filename,
-    isLocalFile,
     needTTS,
     onlyUpload,
     upload,
 }: CreateConfig) => {
-    let { metadata, file } = await new GetContentService().execute(filename, isLocalFile,'portrait');
+    let { metadata, file } = await new GetContentService().execute(filename,'portrait');
     let content = metadata.content;
 
     if (!onlyUpload) {

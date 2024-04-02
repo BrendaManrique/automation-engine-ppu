@@ -53,6 +53,9 @@ class RenderVideoService {
             inputProps: {
                 content: this.metadata.content,
                 durationInFrames: durationInFrames,
+                fps: this.metadata.fps,
+                width: format[videoFormat].width,
+                height: format[videoFormat].height,
                 withoutIntro: !withIntro,
                 destination,
                 tmpPath,
@@ -64,7 +67,13 @@ class RenderVideoService {
                 width: format[videoFormat].width,
                 height: format[videoFormat].height,
                 defaultProps:{}, 
-                props:{},
+                props:{
+                    content: this.metadata.content,
+                    durationInFrames: durationInFrames,
+                    withoutIntro: !withIntro,
+                    destination,
+                    tmpPath,
+                },
                 defaultCodec:'h264'
             },
             imageFormat: 'jpeg',

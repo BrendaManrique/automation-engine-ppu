@@ -3,23 +3,23 @@ import path from 'path';
 
 import { log } from '../utils/log';
 import { getPath } from '../config/defaultPaths';
-import InterfaceJsonContent from '../models/InterfaceJsonContent';
+import InterfaceJsonMetadata from '../models/InterfaceJsonMetadata';
 
 export default class ExportDataService {
-    private content: InterfaceJsonContent;
+    private metadata: InterfaceJsonMetadata;
 
-    constructor(content: InterfaceJsonContent) {
-        this.content = content;
+    constructor(metadata: InterfaceJsonMetadata) {
+        this.metadata = metadata;
     }
 
-    public async execute(filename?: string, isLocalFile?:boolean) {
-        const dataFilename = filename || `${this.content.timestamp}.json`;
+    public async execute(filename?: string) {
+        const dataFilename = filename || `${this.metadata.timestamp}.json`;
 
         log(`Exporting data to ${dataFilename}`, 'ExportDataService');
 
         fs.writeFileSync(
-            path.resolve(await getPath(isLocalFile ? 'public':'content'), dataFilename),
-            JSON.stringify(this.content, null, 4),
+            path.resolve(await getPath('content'), dataFilename),
+            JSON.stringify(this.metadata, null, 4),
         );
     }
 }

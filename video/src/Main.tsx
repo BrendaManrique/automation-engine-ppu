@@ -17,6 +17,7 @@ import {
 import axios from 'axios';
 import { getVideoMetadata } from "@remotion/media-utils";
 
+import { log, error } from '../../src/utils/log';
 import { Title } from './Podcast/Title';
 import { Background } from './Podcast/Background';
 import { Character } from './Podcast/Character';
@@ -39,7 +40,7 @@ const { withoutIntro } = getInputProps();
 export const Main: React.FC<{
     content: InterfaceJsonContent
 }> = ({ content: { renderData,renderSentences, title, youtube } }) => {
-    console.log('Main Content received >>>>>',renderData, title, youtube );
+    log(`Main Content received ${renderData}`, 'MainModule');
     if (!renderData) {
         throw new Error('Missing renderData');
     }

@@ -152,7 +152,7 @@ https://www.googleapis.com/auth/youtube.upload
 - yarn remotion render ./video/src/index.js Main out/out.mp4 --props=./props.json
 
 ### Create content locally
-- Run ./bin/dev create youtube -f demo-content.json -l -u -t
+- Run ./bin/dev create youtube -f demo-content.json -u -t
 - yarn remotion render video/src/index.js Main out/video.mp4 --props=./public/demo-content.json
 
 ###Run server locally

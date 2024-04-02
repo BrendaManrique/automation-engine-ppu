@@ -2,7 +2,7 @@ import InterfaceJsonContent from "./InterfaceJsonContent";
 
 export default interface InterfaceJsonMetadata {
     content: InterfaceJsonContent,
-    durationInFrames?: number,
+    durationInFrames: number,
     destination?:string
     width: number;
     height: number;

@@ -23,9 +23,9 @@ const {
 
 export const RemotionVideo: React.FC = () => {
     
-    log(`Metadata ${content}`, 'RenderVideoService');
+    //log(`Metadata  ${JSON.stringify(content.renderData)}`, 'RenderVideoService');
         
-    if ( !content || !content['renderData'] || !durationInFrames) {
+    if ( !content || !content.renderData || !durationInFrames) {
         //@ts-ignore
         throw new Error(`Missing information. Content: ${!!content}, renderData: ${!!content.renderData}, durationInFrames: ${!!durationInFrames}`);
     }

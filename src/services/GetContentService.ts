@@ -10,11 +10,11 @@ import format from '../config/format';
 
 export default class GetContentService {
     // eslint-disable-next-line
-    public async execute(filename?: string, isLocalFile?:boolean, videoFormat?: 'portrait' | 'landscape' | 'square'): Promise<{ metadata: InterfaceJsonMetadata, file: string }> {
-        const contentPath = await getPath(isLocalFile ? 'public':'content');
+    public async execute(filename?: string, videoFormat?: 'portrait' | 'landscape' | 'square'): Promise<{ metadata: InterfaceJsonMetadata, file: string }> {
+        const contentPath = await getPath('content');
 
         const contentFilePath = filename
-            ? path.resolve(contentPath, filename)
+            ? `./content/${filename}`//path.resolve(contentPath, filename)
             : await getLatestFileCreated('json', contentPath);
 
         log(`Getting content from ${contentFilePath}`, 'GetContentService');
