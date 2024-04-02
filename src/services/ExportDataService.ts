@@ -12,13 +12,13 @@ export default class ExportDataService {
         this.content = content;
     }
 
-    public async execute(filename?: string) {
+    public async execute(filename?: string, isLocalFile?:boolean) {
         const dataFilename = filename || `${this.content.timestamp}.json`;
 
         log(`Exporting data to ${dataFilename}`, 'ExportDataService');
 
         fs.writeFileSync(
-            path.resolve(await getPath('content'), dataFilename),
+            path.resolve(await getPath(isLocalFile ? 'public':'content'), dataFilename),
             JSON.stringify(this.content, null, 4),
         );
     }

@@ -4,14 +4,14 @@ import TextToSpeechService from './TextToSpeechService';
 import ExportDataService from './ExportDataService';
 import RenderVideoService from './RenderVideoService';
 import YoutubeUploadService from './YoutubeUploadService';
-import CreateThumbnailService from './CreateThumnailService';
+import CreateThumbnailService from './CreateThumbnailService';
 import BundleVideoService from './BundleVideoService';
 import CreateContentTemplateService from './CreateContentTemplateService';
 import CleanTmpService from './CleanTmpService';
 import InstagramUploadService from './InstagramUploadService';
 import ValidatesContentService from './ValidatesContentService';
 import MailToJsonService from './MailToJsonService';
-import GetYoutubeinfoService from './GetYoutubeInfoService';
+import GetYoutubeInfoService from './GetYoutubeInfoService';
 
 export {
     GetContentService,
@@ -20,12 +20,12 @@ export {
     ExportDataService,
     YoutubeUploadService,
     CreateContentTemplateService,
-    CreateThumbnailService as CreateThumnailService,
+    CreateThumbnailService,
     BundleVideoService,
     CleanTmpService,
     InstagramUploadService,
     ValidatesContentService,
     MailToJsonService,
-    GetYoutubeinfoService,
+    GetYoutubeInfoService,
     ContentProcessService,
 };

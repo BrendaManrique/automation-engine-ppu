@@ -4,10 +4,10 @@ import { CreateConfig } from '../types';
 
 import {
     BundleVideoService,
-    CreateThumnailService,
+    CreateThumbnailService,
     ExportDataService,
     GetContentService,
-    GetYoutubeinfoService,
+    GetYoutubeInfoService,
     InstagramUploadService,
     RenderVideoService,
     TextToSpeechService,
@@ -21,12 +21,19 @@ import fs from 'fs';
 export default class Create extends Command {
     static description = 'Create video and upload to destination';
 
-    static examples = ['<%= config.bin %> <%= command.id %> youtube -u -t'];
+    static examples = [
+        '<%= config.bin %> <%= command.id %> youtube -u -t',
+        '<%= config.bin %> <%= command.id %> youtube -f demo-content.json -l -u -t'];
 
     static flags = {
         filename: Flags.string({
             char: 'f',
             description: 'filename with content',
+        }),
+        isLocalFile: Flags.boolean({
+            char: 'l',
+            description:
+                "is file from content located in ./props.json",
         }),
         needTTS: Flags.boolean({
             char: 't',
@@ -56,14 +63,14 @@ export default class Create extends Command {
     public async run(): Promise<void> {
         const { args, flags } = await this.parse(Create);
 
-        const { filename, needTTS, upload, onlyUpload } = flags;
+        const { filename, isLocalFile, needTTS, upload, onlyUpload } = flags;
 
         switch (args.option) {
             case 'tts':
                 await tts({ filename });
                 break;
             case 'youtube':
-                await youtube({ filename, needTTS, upload, onlyUpload });
+                await youtube({ filename, isLocalFile, needTTS, upload, onlyUpload });
                 break;
             case 'instagram':
                 await instagram({ filename, needTTS, upload, onlyUpload });
@@ -88,44 +95,52 @@ const tts = async ({ filename }: CreateConfig) => {
 
 const youtube = async ({
     filename,
+    isLocalFile,
     needTTS,
     onlyUpload,
     upload,
 }: CreateConfig) => {
-    //let { content, file } = await new GetContentService().execute(filename, 'portrait');
-    const rawData = fs.readFileSync('./props.json');
-    const data = JSON.parse(rawData.toString());
-    const content = data.content;
+    let { metadata, file } = await new GetContentService().execute(filename, isLocalFile, 'portrait');
+    let content = metadata.content;
+
+    // Read Props
+    //-----------------
+    //const rawData = fs.readFileSync('./props.json');
+    //const data = JSON.parse(rawData.toString());
+    //const content = data.content;
+    //------------------
 
     if (!onlyUpload) {
-        /*if (needTTS) {
+        if (needTTS) {
             const contentTts = await new TextToSpeechService(content).execute({
                 synthesizeIntro: true,
                 synthesizeEnd: true,
             })
-            content = await new ContentProcessService(contentTts).execute({
-                content
-            }, 'portrait');
-        }*/
+            //content = await new ContentProcessService(contentTts).execute({
+            //    content
+            //}, 'portrait');
+        }
 
-        //content = await new GetYoutubeinfoService(content).execute();
+        //Retrieves YT token
+        //content = await new GetYoutubeInfoService(content).execute();
 
-        
-        // Modify the value
+        // Store Props
+        //-----------------
         //data.content = content;
         // Write the modified data back to the file
         //fs.writeFileSync('./props.json', JSON.stringify(data));
+        //------------------
 
         const bundle = await new BundleVideoService().execute();
 
-        await new RenderVideoService(content).execute(
+        metadata.durationInFrames = await new RenderVideoService(metadata).execute(
             bundle,
             'portrait',
             true,
             'youtube',
         );
 
-        await new CreateThumnailService(content).execute(bundle);
+        await new CreateThumbnailService(metadata).execute(bundle);
     }
 
     if (upload || onlyUpload) {
@@ -139,16 +154,18 @@ const youtube = async ({
          );
     }
 
-    //await new ExportDataService(content).execute(file);
+    await new ExportDataService(content).execute(file, isLocalFile);
 };
 
 const instagram = async ({
     filename,
+    isLocalFile,
     needTTS,
     onlyUpload,
     upload,
 }: CreateConfig) => {
-    let { content, file } = await new GetContentService().execute(filename, 'portrait');
+    let { metadata, file } = await new GetContentService().execute(filename, isLocalFile,'portrait');
+    let content = metadata.content;
 
     if (!onlyUpload) {
         if (needTTS) {
@@ -163,14 +180,14 @@ const instagram = async ({
 
         const bundle = await new BundleVideoService().execute();
 
-        await new RenderVideoService(content).execute(
+        await new RenderVideoService(metadata).execute(
             bundle,
             'portrait',
             false,
             'instagram',
         );
 
-        await new CreateThumnailService(content).execute(bundle);
+        await new CreateThumbnailService(metadata).execute(bundle);
     }
 
     if (upload || onlyUpload) {

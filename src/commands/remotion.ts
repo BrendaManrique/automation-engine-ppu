@@ -31,20 +31,20 @@ export default class Remotion extends Command {
 
     public async run(): Promise<void> {
         const { args, flags } = await this.parse(Remotion);
-        let content = {};
+        let metadata = {};
         let props = {};
 
         //Render demo will get props directly from json file.
         if(args.command != 'render-demo' ){
-            content = await new GetContentService().execute(flags.filename)['content'] || undefined;
-            if (!content || !content['renderData']) {
+            metadata = await new GetContentService().execute(flags.filename)['metadata'];
+            if (!metadata || !metadata['content']['renderData']) {
                 throw new Error('Content not found');
             }
             
-            const durationInFrames = Math.round(this.getFullDuration(content['renderData']) * content['fps'])
+            const durationInFrames = Math.round(this.getFullDuration(metadata['content']['renderData']) * metadata['fps'])
 
             props = {
-                content,
+                metadata,
                 destination: 'youtube',
                 durationInFrames,
             }
@@ -63,7 +63,7 @@ export default class Remotion extends Command {
                 command = `yarn remotion render video/src/index.tsx Main out.mp4 --props='${JSON.stringify(props)}'`;
                 break;
             case 'render-demo':
-                command = `yarn remotion render video/src/index.js Main out/video.mp4 --props=./props.json`;
+                command = `yarn remotion render video/src/index.js Main out/video.mp4 --props=./public/demo-content.json`;
                 break;
             case 'render-thumb-example':
                 command = `yarn remotion still video/src/index.tsx Thumbnail thumb.png --props='${JSON.stringify(props)}'`;

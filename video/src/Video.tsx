@@ -8,21 +8,24 @@ import {
 import { Main } from './Main';
 import { Thumbnail } from './Thumbnail';
 
+import { log, error } from '../../src/utils/log';
 import '../../assets/fonts.css';
+import InterfaceJsonMetadata from 'models/InterfaceJsonMetadata';
 import InterfaceJsonContent from 'models/InterfaceJsonContent';
 
 const { 
     content, 
-    durationInFrames
- }: { 
-    content?: InterfaceJsonContent,
-    durationInFrames?: number
- } = getInputProps()
+    durationInFrames, fps,width,height, date
+ } = getInputProps() as { 
+    content: InterfaceJsonContent,
+    durationInFrames: number, fps:number,width:number,height:number, date:string
+ }
 
 export const RemotionVideo: React.FC = () => {
-    //console.log(content)
     
-    if (!content || !content.renderData || !durationInFrames) {
+    log(`Metadata ${content}`, 'RenderVideoService');
+        
+    if ( !content || !content['renderData'] || !durationInFrames) {
         //@ts-ignore
         throw new Error(`Missing information. Content: ${!!content}, renderData: ${!!content.renderData}, durationInFrames: ${!!durationInFrames}`);
     }
@@ -33,9 +36,9 @@ export const RemotionVideo: React.FC = () => {
                 id="Main"
                 component={Main}
                 durationInFrames={durationInFrames}
-                fps={content.fps}
-                width={content.width}
-                height={content.height}
+                fps={fps}
+                width={width}
+                height={height}
                 defaultProps={{
                     content
                 }}
@@ -44,12 +47,12 @@ export const RemotionVideo: React.FC = () => {
                 id="Thumbnail"
                 component={Thumbnail}
                 durationInFrames={1}
-                fps={content.fps}
-                width={content.width}
-                height={content.height}
+                fps={fps}
+                width={width}
+                height={height}
                 defaultProps={{
                     title: content.title,
-                    date: content.date,
+                    date: date,
                 }}
             />
         </>

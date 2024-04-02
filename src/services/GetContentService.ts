@@ -5,12 +5,13 @@ import { error, log } from '../utils/log';
 import { getLatestFileCreated } from '../utils/getFiles';
 import { getPath } from '../config/defaultPaths';
 import InterfaceJsonContent from '../models/InterfaceJsonContent';
+import InterfaceJsonMetadata from '../models/InterfaceJsonMetadata';
 import format from '../config/format';
 
 export default class GetContentService {
     // eslint-disable-next-line
-    public async execute(filename?: string, videoFormat?: 'portrait' | 'landscape' | 'square'): Promise<{ content: InterfaceJsonContent, file: string }> {
-        const contentPath = await getPath('content');
+    public async execute(filename?: string, isLocalFile?:boolean, videoFormat?: 'portrait' | 'landscape' | 'square'): Promise<{ metadata: InterfaceJsonMetadata, file: string }> {
+        const contentPath = await getPath(isLocalFile ? 'public':'content');
 
         const contentFilePath = filename
             ? path.resolve(contentPath, filename)
@@ -23,14 +24,13 @@ export default class GetContentService {
                 encoding: 'utf-8',
             });
 
-            const jsonContent = JSON.parse(content) as InterfaceJsonContent;
+            const jsonMetadata = JSON.parse(content) as InterfaceJsonMetadata;
 
             if (videoFormat) {
-                jsonContent.width = format[videoFormat].width;
-                jsonContent.height = format[videoFormat].height;
+                jsonMetadata.width = format[videoFormat].width;
+                jsonMetadata.height = format[videoFormat].height;
             }
-
-            return { content: jsonContent, file: contentFilePath };
+        return { metadata: jsonMetadata, file: contentFilePath };
         } catch {
             error(`${contentFilePath} not found`, 'GetContentService');
             process.exit(1);

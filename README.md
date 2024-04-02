@@ -146,10 +146,14 @@ https://www.googleapis.com/auth/youtube.upload
 **To run a workflow**
 -Go to Actions and run the Create a Video workflow.
 
-### Run locally
+### Run video render locally
 - Ensure that props.json has the correct props. 
 - yarn remotion preview ./video/src/index.js --props=./props.json   
 - yarn remotion render ./video/src/index.js Main out/out.mp4 --props=./props.json
+
+### Create content locally
+- Run ./bin/dev create youtube -f demo-content.json -l -u -t
+- yarn remotion render video/src/index.js Main out/video.mp4 --props=./public/demo-content.json
 
 ###Run server locally
 python3 -m pip install --upgrade pip

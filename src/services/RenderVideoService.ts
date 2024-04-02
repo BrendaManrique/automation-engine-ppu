@@ -2,6 +2,7 @@ import path from 'path';
 import fs from 'fs'
 import { renderMedia } from '@remotion/renderer';
 
+import InterfaceJsonMetadata from '../models/InterfaceJsonMetadata';
 import InterfaceJsonContent from '../models/InterfaceJsonContent';
 import { log, error } from '../utils/log';
 import { getPath } from '../config/defaultPaths';
@@ -10,12 +11,12 @@ import Bar from '../utils/CliProgress/bar';
 import { ln } from 'shelljs';
 
 class RenderVideoService {
-    private content: InterfaceJsonContent;
+    private metadata: InterfaceJsonMetadata;
     private transitionDurationInSeconds = 2.9;
     private compositionId = 'Main';
 
-    constructor(content: InterfaceJsonContent) {
-        this.content = content;
+    constructor(metadata: InterfaceJsonMetadata) {
+        this.metadata = metadata;
     }
 
     public async execute(
@@ -23,13 +24,13 @@ class RenderVideoService {
         videoFormat: 'portrait' | 'landscape' | 'square',
         withIntro: boolean,
         destination?: 'youtube' | 'instagram',
-    ): Promise<string> {
+    ): Promise<number> {
         log(`Getting compositions from ${bundle}`, 'RenderVideoService');
         const tmpPath = await getPath('tmp');
 
         const outputVideoPath = path.resolve(
             tmpPath,
-            `${this.content.timestamp}.mp4`,
+            `${this.metadata.timestamp}.mp4`,
         );
 
         const renderProgressBar = new Bar({
@@ -37,7 +38,7 @@ class RenderVideoService {
             text: '[RenderVideoService] Progress {bar} {percentage}% | ETA: {eta}s | {value}/{total} | Rate: {rate} | Stage: {stage}',
         });
 
-        const durationInFrames = Math.floor(this.getFullDuration() * this.content.fps)
+        const durationInFrames = Math.floor(this.getFullDuration() * this.metadata.fps);
 
         //Key function to render Main.tsx
         await renderMedia({
@@ -50,7 +51,7 @@ class RenderVideoService {
             },
             outputLocation: outputVideoPath,
             inputProps: {
-                content: this.content,
+                content: this.metadata.content,
                 durationInFrames: durationInFrames,
                 withoutIntro: !withIntro,
                 destination,
@@ -59,17 +60,11 @@ class RenderVideoService {
             composition: {
                 id: this.compositionId,
                 durationInFrames,
-                fps: this.content.fps,
+                fps: this.metadata.fps,
                 width: format[videoFormat].width,
                 height: format[videoFormat].height,
                 defaultProps:{}, 
-                props:{
-                    content: this.content,
-                    durationInFrames: durationInFrames,
-                    withoutIntro: !withIntro,
-                    destination,
-                    tmpPath,
-                },
+                props:{},
                 defaultCodec:'h264'
             },
             imageFormat: 'jpeg',
@@ -79,22 +74,23 @@ class RenderVideoService {
         });
 
         renderProgressBar.stop();
+        log(`Output Video Path ${outputVideoPath}`, 'RenderVideoService');
 
-        return outputVideoPath;
+        return durationInFrames;
     }
 
     private getFullDuration(): number {
-        log('---->', `${this.content}`);
-        if (!this.content.renderData) {
+        const content = this.metadata.content;
+        if (!content.renderData) {
             error('RenderData is undefined', 'RetrieveAudioDataService');
             process.exit(1);
         }
 
-        return this.content.renderData.reduce(
+        return content.renderData.reduce(
             (accumulator, currentValue, index) => {
                 if (
-                    !this.content.renderData ||
-                    index !== this.content.renderData.length - 1
+                    !content.renderData ||
+                    index !== content.renderData.length - 1
                 ) {
                     return (
                         accumulator +

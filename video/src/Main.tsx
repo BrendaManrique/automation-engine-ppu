@@ -38,8 +38,8 @@ const { withoutIntro } = getInputProps();
 
 export const Main: React.FC<{
     content: InterfaceJsonContent
-}> = ({ content: { renderData,renderSentences,  date, title, youtube } }) => {
-    console.log('Main Content received >>>>>',renderData, date, title, youtube );
+}> = ({ content: { renderData,renderSentences, title, youtube } }) => {
+    console.log('Main Content received >>>>>',renderData, title, youtube );
     if (!renderData) {
         throw new Error('Missing renderData');
     }
