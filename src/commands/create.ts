@@ -83,10 +83,10 @@ const tts = async ({ filename }: CreateConfig) => {
         synthesizeEnd: true,
     });
 
-    const contentProcessed = await new ContentProcessService(content).execute({
-        content: contentWithAudio
-    });
-    metadata.content = contentProcessed;
+    //const contentProcessed = await new ContentProcessService(content).execute({
+    //    content: contentWithAudio
+   // });
+    //metadata.content = contentProcessed;
     await new ExportDataService(metadata).execute(file);
 };
 
