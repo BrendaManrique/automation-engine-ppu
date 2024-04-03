@@ -78,14 +78,11 @@ const tts = async ({ filename }: CreateConfig) => {
     const { metadata, file } = await new GetContentService().execute(filename);
     let content = metadata.content;
 
-    const contentWithAudio = await new TextToSpeechService(content).execute({
-        synthesizeIntro: true,
-        synthesizeEnd: true,
-    });
+    //content = await new TextToSpeechService(content).execute();
 
-    //const contentProcessed = await new ContentProcessService(content).execute({
-    //    content: contentWithAudio
-   // });
+    const contentProcessed = await new ContentProcessService(content).execute({
+        content
+    });
     //metadata.content = contentProcessed;
     await new ExportDataService(metadata).execute(file);
 };
@@ -99,19 +96,9 @@ const youtube = async ({
     let { metadata, file } = await new GetContentService().execute(filename, 'portrait');
     let content = metadata.content;
 
-    // Read Props
-    //-----------------
-    //const rawData = fs.readFileSync('./props.json');
-    //const data = JSON.parse(rawData.toString());
-    //const content = data.content;
-    //------------------
-
     if (!onlyUpload) {
         if (needTTS) {
-            const contentTts = await new TextToSpeechService(content).execute({
-                synthesizeIntro: true,
-                synthesizeEnd: true,
-            })
+            const contentTts = await new TextToSpeechService(content).execute()
             //content = await new ContentProcessService(contentTts).execute({
             //    content
             //}, 'portrait');
@@ -119,13 +106,6 @@ const youtube = async ({
 
         //Retrieves YT token
         //content = await new GetYoutubeInfoService(content).execute();
-
-        // Store Props
-        //-----------------
-        //data.content = content;
-        // Write the modified data back to the file
-        //fs.writeFileSync('./props.json', JSON.stringify(data));
-        //------------------
 
         const bundle = await new BundleVideoService().execute();
 
@@ -164,10 +144,7 @@ const instagram = async ({
 
     if (!onlyUpload) {
         if (needTTS) {
-            content = await new TextToSpeechService(content).execute({
-                synthesizeIntro: false,
-                synthesizeEnd: false,
-            });
+            content = await new TextToSpeechService(content).execute();
             content = await new ContentProcessService(content).execute({
                 content
             }, 'portrait');

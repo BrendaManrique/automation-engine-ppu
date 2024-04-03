@@ -73,7 +73,7 @@ def get_news_text(content_file: str):
     # segmenter.segment(content["news"][0]["text"])
 
     segmented_news = {str(index): info['text'] for index, info in enumerate(content["news"])}
-    segmented_news["intro"] = content["intro"]['text']
+    segmented_news["contentText"] = content["contentText"]['text']
     segmented_news["end"] = content["end"]['text']
 
     return segmented_news

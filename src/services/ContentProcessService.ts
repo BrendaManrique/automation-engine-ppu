@@ -186,7 +186,7 @@ class ContentProcessService {
                 }
             }}
             const data = {
-                model: "gpt-3.5-turbo-0613",
+                model: "gpt-3.5-turbo",
                 messages: [
                   { role: "system", "content": "You are a content creator." },
                   { role: "user", content: prompt }],
@@ -245,6 +245,9 @@ class ContentProcessService {
             
                 let outputVideoPath = '';
                 let pexelsUrl  = '';
+                if(!!response.videos ){
+                    pexelsUrl = response.videos[0].video_files[0].link;
+                }
                 /*if(!!response.videos ){
                     const pexelsUrl = response.videos[0].video_files[0].link;
                     //const pexelsUrl = "https://player.vimeo.com/external/516260402.hd.mp4?s=337a95a1b2fc99043000e6e07938fdf891bf7287&profile_id=172&oauth2_token_id=57447761";

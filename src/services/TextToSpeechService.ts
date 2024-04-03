@@ -62,27 +62,22 @@ class TextToSpeechService {
         this.content.renderData = [];
     }
 
-    public async execute({
-        synthesizeIntro,
-        synthesizeEnd,
-    }: {
-        synthesizeIntro?: boolean;
-        synthesizeEnd?: boolean;
-    }): Promise<InterfaceJsonContent> {
-        /*const synthesizePromises: Promise<void>[] = [];
+    public async execute(): Promise<InterfaceJsonContent> {
+        await this.synthesizeMicrosoft()
+        //await this.synthesizeOpenAI()
 
+
+        //Old code------------------------
+        /*const synthesizePromises: Promise<void>[] = [];
         if (synthesizeIntro) {
             synthesizePromises.push(this.synthesizeIntro());
         }
-
         synthesizePromises.push(this.synthesizeNews());
-
         await Promise.all(synthesizePromises);
-
         if (synthesizeEnd) {
             await this.synthesizeEnd()
         }*/
-        await this.synthesizeOpenAI()
+
         //log(`${JSON.stringify(this.content)}`, 'TextToSpeechService');
         return this.content;
     }
@@ -139,9 +134,9 @@ class TextToSpeechService {
         });  
     }
 
-    private async synthesizeIntro(): Promise<void> {
-        if (!this.content.intro?.text) {
-            log('Intro text is not defined, skipping...', 'TextToSeechService');
+    private async synthesizeMicrosoft(): Promise<void> {
+        if (!this.content.contentText?.text) {
+            log('ContentText text is not defined, skipping...', 'TextToSeechService');
             return;
         }
 
@@ -150,14 +145,14 @@ class TextToSpeechService {
             throw new Error('Render data is not defined');
         }
 
-        log(`Synthesizing Intro`, 'TextToSpeechService');
+        log(`Synthesizing ContentText`, 'TextToSpeechService');
         const { audioFilePath, segments, duration } = await this.synthesize(
-            this.content.intro.text,
-            'intro',
+            this.content.contentText.text,
+            'contentText',
         );
 
         this.content.renderData[0] = {
-            text: this.content.intro.text,
+            text: this.content.contentText.text,
             duration,
             audioFilePath,
             segments,
@@ -258,15 +253,20 @@ class TextToSpeechService {
 
 
             const ssml = `
-                <speak version="1.0" xml:lang="en-US" xmlns:mstts="http://www.w3.org/2001/mstts">
-                    <voice name="${this.getVoice()}">
+                <speak version="1.0" xml:lang="pt-BR">
+                    <voice name="${this.getSingleVoice()}">
+                        <break time="250ms" /> ${text}
+                    </voice>
+                </speak>`;
+                /*<speak version="1.0" xml:lang="en-US" xmlns:mstts="http://www.w3.org/2001/mstts">
+                    <voice name="${this.getSingleVoice()}">
                         <mstts:express-as style="whispering">
                             <prosody rate="-22.00%">
                                 ${text}
                             </prosody>
                         </mstts:express-as>
                     </voice>
-                </speak>`;
+                </speak>`;*/
             //<mstts:express-as style="whispering">
             //</mstts:express-as>
             //<speak xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="http://www.w3.org/2001/mstts" xmlns:emo="http://www.w3.org/2009/10/emotionml" version="1.0" xml:lang="en-US"><voice name="en-US-JasonNeural"><s /><mstts:express-as style="whispering">This is a new text"</mstts:express-as></voice><voice name="en-US-AriaNeural"><mstts:express-as style="whispering">That’s remarkable! You’re a genius!"Mom said to her son.</mstts:express-as><s />
@@ -277,21 +277,14 @@ class TextToSpeechService {
             );
 
             synthesizer.wordBoundary = (s, e) => {
-                switch (e.boundaryType) {
-                    case SpeechSynthesisBoundaryType.Word:
-                        segments.push({
-                            start: e.audioOffset / 10000,
-                            end: (e.audioOffset + e.duration) / 10000,
-                            word: e.text
-                        })
-                        break;
-                    case SpeechSynthesisBoundaryType.Punctuation:
-                        segments.push({
-                            start: e.audioOffset / 10000,
-                            end: (e.audioOffset + e.duration) / 10000,
-                            word: e.text
-                        })
-                        break;
+                if (SpeechSynthesisBoundaryType.Word === e.boundaryType) {
+                    const originalText = ssml.substring(e.textOffset - 1, e.textOffset + e.wordLength + 1).trim(); // +1 to include the punctuation
+                    
+                    segments.push({
+                        start: e.audioOffset / 10000,
+                        end: (e.audioOffset + e.duration) / 10000,
+                        word: originalText,
+                    })
                 }
             }
 

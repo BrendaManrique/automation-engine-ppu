@@ -1,7 +1,7 @@
 import Segment from "./Segments";
 
 export default interface InterfaceJsonContent {
-    intro?: { text: string; url?: string; shortLink?: string };
+    contentText?: { text: string; url?: string; shortLink?: string };
     end?: { text: string; url?: string; shortLink?: string };
     news: { text: string; url?: string; shortLink?: string }[];
     message?: { text: string; url?: string; shortLink?: string };

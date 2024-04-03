@@ -26,7 +26,7 @@ export default class CreateContentTemplateService {
             //width: 0,
             //height: 0,
             //date: new Date().toLocaleDateString('pt-BR'),
-            intro: {
+            contentText: {
                 text: `Olá pessoal, sigam agora com as notícias desta ${new Date().toLocaleDateString(
                     'pt-BR',
                     { weekday: 'long' },
