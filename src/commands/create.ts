@@ -23,7 +23,7 @@ export default class Create extends Command {
 
     static examples = [
         '<%= config.bin %> <%= command.id %> youtube -u -t',
-        '<%= config.bin %> <%= command.id %> youtube -f demo-content.json -u -t'];
+        '<%= config.bin %> <%= command.id %> youtube -f demo-data.json -u -t'];
 
     static flags = {
         filename: Flags.string({

@@ -152,10 +152,10 @@ https://www.googleapis.com/auth/youtube.upload
 - yarn remotion render ./video/src/index.js Main out/out.mp4 --props=./props.json
 
 ### Create content locally
-- Copy keys locally
-- Run ./bin/dev create tts
-- Run ./bin/dev create youtube -f demo-content.json -u -t
-- yarn remotion render video/src/index.js Main out/video.mp4 --props=./public/demo-content.json
+- Copy keys locally to .env
+- Run ./bin/dev create tts -f demo-data.json 
+- Run ./bin/dev create youtube -f demo-data.json -u -t
+- yarn remotion render video/src/index.js Main out/video.mp4 --props=./public/demo-data.json
 
 ### Run server locally
 python3 -m pip install --upgrade pip
