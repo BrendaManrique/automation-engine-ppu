@@ -1,9 +1,9 @@
 name: Create content file
 
-#on:
-#    schedule:
-#        - cron: '20 14 * * 1-5'
-#    workflow_dispatch:
+on:
+    schedule:
+        #- cron: '20 14 * * 1-5'
+    workflow_dispatch:
 
 env:
     DEBUG: 1

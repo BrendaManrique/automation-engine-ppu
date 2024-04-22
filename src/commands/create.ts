@@ -84,7 +84,7 @@ const tts = async ({ filename }: CreateConfig) => {
         content
     });
     //metadata.content = contentProcessed;
-    await new ExportDataService(metadata).execute(file);
+    await new ExportDataService(metadata).execute();
 };
 
 const youtube = async ({
