@@ -65,7 +65,7 @@ jobs:
               run: echo "tmpPath=$(./bin/run info tmp --dir)" >> $GITHUB_OUTPUT
 
             - name: Create TTS
-              run: ./bin/run create tts -f demo-data.json 
+              run: ./bin/run create tts
 
             - name: Save TTS files in Artifacts
               uses: actions/upload-artifact@v3
