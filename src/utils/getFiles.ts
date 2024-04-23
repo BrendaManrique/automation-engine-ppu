@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-import { error } from './log';
+import { error, log} from './log';
 import { getPath } from '../config/defaultPaths';
 
 export const getLatestFileCreated = async (
@@ -13,6 +13,7 @@ export const getLatestFileCreated = async (
     }
 
     const files = fs.readdirSync(dirPath);
+    log(`Found files ${JSON.stringify(files)}`, 'GetFiles');
 
     const mostRecentlyCreatedFile = files
         .filter(file => path.extname(file) === `.${fileExt}`)
