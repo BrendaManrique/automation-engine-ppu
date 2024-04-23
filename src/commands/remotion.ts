@@ -2,6 +2,8 @@ import { Command, Flags } from '@oclif/core';
 import { GetContentService } from '../services';
 import shell from 'shelljs';
 
+import { error, log} from '../utils/log';
+
 export default class Remotion extends Command {
     static description = 'Remotion framework related commands';
 
@@ -31,12 +33,16 @@ export default class Remotion extends Command {
 
     public async run(): Promise<void> {
         const { args, flags } = await this.parse(Remotion);
+        let data = {};
         let metadata = {};
         let props = {};
 
         //Render demo will get props directly from json file.
         if(args.command != 'render-demo' ){
-            metadata = await new GetContentService().execute(flags.filename);
+            data = await new GetContentService().execute(flags.filename);
+            log(`Reading data ${JSON.stringify(data)}`, 'Remotion Command');
+            metadata = data['metadata'];
+            log(`Reading metadata ${JSON.stringify(metadata)}`, 'Remotion Command');
             if (!metadata || !metadata['content']['renderData']) {
                 throw new Error('Content not found');
             }
