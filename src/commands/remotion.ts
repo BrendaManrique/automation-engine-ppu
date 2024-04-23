@@ -36,7 +36,7 @@ export default class Remotion extends Command {
 
         //Render demo will get props directly from json file.
         if(args.command != 'render-demo' ){
-            metadata = await new GetContentService().execute(flags.filename)['metadata'];
+            metadata = await new GetContentService().execute(flags.filename);
             if (!metadata || !metadata['content']['renderData']) {
                 throw new Error('Content not found');
             }

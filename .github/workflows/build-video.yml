@@ -131,7 +131,7 @@ jobs:
                 ln -sf $Tmp public
 
             - name: Create Youtube video
-              run: ./bin/dev remotion render-video
+              run: ./bin/run remotion render-video
 
             - name: Create Youtube video
               run: ./bin/run create youtube -o
