@@ -13,7 +13,7 @@ export default class ExportDataService {
     }
 
     public async execute(filename?: string) {
-        const dataFilename = filename || `${this.metadata.timestamp}-${(this.metadata.date).replace('/','')}.json`;
+        const dataFilename = filename || `${this.metadata.timestamp}-${(this.metadata.date).replaceAll('/','')}.json`;
 
         log(`Exporting data to ${dataFilename}`, 'ExportDataService');
 
