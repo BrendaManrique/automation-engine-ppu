@@ -2,5 +2,7 @@
 
 const oclif = require('@oclif/core')
 
+oclif.settings.debug = true;
+
 oclif.run().then(require('@oclif/core/flush')).catch(require('@oclif/core/handle'))
 
