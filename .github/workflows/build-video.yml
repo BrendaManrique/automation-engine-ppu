@@ -134,7 +134,7 @@ jobs:
               run: ./bin/run remotion render-video
 
             - name: Create Youtube video
-              run: ./bin/run create youtube -onlyupload
+              run: ./bin/run create youtube -o
 
             - name: Save video in Artifacts
               if: ${{ failure() }}
@@ -160,5 +160,6 @@ jobs:
             - name: SSH debug
               if: ${{ failure() }}
               uses: mxschmitt/action-tmate@v3
+              timeout-minutes: 3
               with:
                   limit-access-to-actor: true

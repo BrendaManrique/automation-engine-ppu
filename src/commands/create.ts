@@ -41,6 +41,7 @@ export default class Create extends Command {
                 'should upload result to destination (only works to YouTube and Instagram)',
         }),
         onlyUpload: Flags.boolean({
+            char: 'o',
             description:
                 'Only upload result to destination (only works to YouTube and Instagram). Your video should be created separately, placed on tmp folder and be the last file created on it.',
         }),
