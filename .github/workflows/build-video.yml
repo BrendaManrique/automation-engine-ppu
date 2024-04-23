@@ -131,7 +131,10 @@ jobs:
                 ln -sf $Tmp public
 
             - name: Create Youtube video
-              run: ./bin/run create youtube -u
+              run: ./bin/run remotion render-video
+
+            - name: Create Youtube video
+              run: ./bin/run create youtube -onlyupload
 
             - name: Save video in Artifacts
               if: ${{ failure() }}

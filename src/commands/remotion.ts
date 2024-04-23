@@ -8,7 +8,7 @@ export default class Remotion extends Command {
     static examples = [
         '<%= config.bin %> <%= command.id %> upgrade',
         '<%= config.bin %> <%= command.id %> preview',
-        '<%= config.bin %> <%= command.id %> render-example',
+        '<%= config.bin %> <%= command.id %> render-video',
         '<%= config.bin %> <%= command.id %> render-demo',
         '<%= config.bin %> <%= command.id %> render-thumb-example',
     ];
@@ -25,7 +25,7 @@ export default class Remotion extends Command {
             name: 'command',
             required: true,
             description: 'Command to run',
-            options: ['upgrade', 'preview', 'render-example', 'render-demo', 'render-thumb-example'],
+            options: ['upgrade', 'preview', 'render-video', 'render-demo', 'render-thumb-example'],
         },
     ];
 
@@ -59,7 +59,7 @@ export default class Remotion extends Command {
             case 'preview':
                 command = `yarn remotion preview video/src/index.js --props='${JSON.stringify(props)}'`;
                 break;
-            case 'render-example':
+            case 'render-video':
                 command = `yarn remotion render video/src/index.js Main out.mp4 --props='${JSON.stringify(props)}'`;
                 break;
             case 'render-demo':
